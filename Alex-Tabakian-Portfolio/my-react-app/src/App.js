@@ -1,7 +1,8 @@
 import './App.css';
 import { useState } from "react";
 
-// test 
+
+// ----------------- App component -----------------
 function App() {
   const [active, setActive] = useState("work");
 
@@ -32,6 +33,7 @@ function App() {
       logoSrc: "/logos/uofsc_logo.jfif"
     }
   ];
+
   const educationData = [
     {
       school: "University of South Carolina",
@@ -39,57 +41,49 @@ function App() {
       date: "2023 - 2026",
       grade: "GPA: 3.5",
       logoSrc: "/logos/uofsc_logo.jfif"
-    }];
-  const technologies = [
-    {
-      name: "Java",
-      logoSrc: "/logos/java"
-    },
-    {
-      name: "Python",
-      logoSrc: "/logos/python"
-    },
-    {
-      name: "C++",
-      logoSrc: "/logos/c++"
-    },
-    {
-      name: "React",
-      logoSrc: "/logos/react"
-    },
-    {
-      name: "Git",
-      logoSrc: "/logos/git"
-    },
-    {
-      name: "GitHub",
-      logoSrc: "/logos/github"
-    },
-    {
-      name: "Linux",
-      logoSrc: "/logos/linux"
-    },
-    {
-      name: "Windows",
-      logoSrc: "/logos/windows"
-    },
-    {
-      name: "Javascript",
-      logoSrc: "/logos/javascript"
-    },
-    {
-      name: "Firebase",
-      logoSrc: "/logos/firebase"
-    },
-    {
-      name: "Unity",
-      logoSrc: "/logos/unity"
     }
-  ]
+  ];
+
+  const technologies = [
+    { name: "Java", logoSrc: "/logos/java" },
+    { name: "Python", logoSrc: "/logos/python" },
+    { name: "C++", logoSrc: "/logos/c++" },
+    { name: "React", logoSrc: "/logos/react" },
+    { name: "Git", logoSrc: "/logos/git" },
+    { name: "GitHub", logoSrc: "/logos/github" },
+    { name: "Linux", logoSrc: "/logos/linux" },
+    { name: "Windows", logoSrc: "/logos/windows" },
+    { name: "Javascript", logoSrc: "/logos/javascript" },
+    { name: "Firebase", logoSrc: "/logos/firebase" },
+    { name: "Unity", logoSrc: "/logos/unity" }
+  ];
+
+  const projects = [
+    {
+      name: "Checkers Bot",
+      description: "AI-driven Checkers bot that uses the Minimax algorithm. I have not beaten it yet.",
+      videoSrc: "/media/CheckersBot.mp4",
+      technologies: ["Minimax","Alpha-Beta Pruning", "Java","Swing"],
+      source: "https://github.com/Alex-Tabakian/CheckersBot"
+    },
+    {
+      name: "PC Inventory Logger",
+      description: "description description description description description description",
+      imageSrc: "",
+      technologies: ["JavaScript", "Firebase"],
+      source: ""
+    },
+    {
+      name: "Music App",
+      description: "description description description description description description",
+      videoSrc: "",
+      technologies: ["Java", "JavaFX", "JSON"],
+      source: ""
+    }
+  ];
 
   return (
-    <div className="App" style={{ height: "100vh", position: "relative" }}>
-
+    <div className="App" style={{ height: "100%", position: "relative" }}>
 
       <header className="App-header">
         <div
@@ -100,7 +94,6 @@ function App() {
             paddingLeft: "110px",
             textAlign: "left",
             color: "white"
-
           }}
         >
           <h1 style={{ fontSize: "48px", margin: 0, fontWeight: 600 }}>
@@ -112,21 +105,17 @@ function App() {
           </p>
 
           <div style={{ display: "flex", alignItems: "center", marginTop: "14px" }}>
-            <span
-              style={{
-                width: "18px",
-                height: "18px",
-                display: "inline-block",
-                marginRight: "8px"
-              }}
-            >
+            <span style={{
+              width: "18px",
+              height: "18px",
+              display: "inline-block",
+              marginRight: "8px"
+            }}>
               📍
             </span>
             <p style={{ fontSize: "18px", margin: 0, color: "#9aa0ab" }}>
               Columbia, SC
             </p>
-
-
           </div>
 
           {/* Social + Resume Buttons */}
@@ -136,8 +125,6 @@ function App() {
             gap: "16px",
             marginTop: "22px"
           }}>
-
-            {/* Resume Button */}
             <a
               href="/James Tabakian Resume.pdf"
               target="_blank"
@@ -155,37 +142,18 @@ function App() {
                 fontWeight: 500
               }}
             >
-              <img
-                src="/logos/download.png"
-                alt="Resume Icon"
-                style={{ width: "20px", height: "20px" }}
-              />
+              <img src="/logos/download.png" alt="Resume Icon" style={{ width: "20px", height: "20px" }} />
               Resume
             </a>
 
-            {/* LinkedIn Icon */}
-            <a href="https://www.linkedin.com/in/yourprofile" target="_blank">
-              <img
-                src="/logos/linkedin.png"
-                alt="LinkedIn"
-                style={{ width: "32px", height: "32px" }}
-              />
+            <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">
+              <img src="/logos/linkedin.png" alt="LinkedIn" style={{ width: "32px", height: "32px" }} />
             </a>
 
-
-            {/* GitHub Icon */}
-            <a href="https://github.com/yourprofile" target="_blank">
-              <img
-                src="/logos/github.png"
-                alt="GitHub"
-                style={{ width: "32px", height: "32px" }}
-              />
+            <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer">
+              <img src="/logos/github.png" alt="GitHub" style={{ width: "32px", height: "32px" }} />
             </a>
-
-
-
           </div>
-
         </div>
       </header>
 
@@ -205,14 +173,13 @@ function App() {
           width: "100%",
         }}
       >
-
         <div
           id="tech-container"
           style={{
             width: "90%",
             maxWidth: 800,
             display: "flex",
-            flexWrap: "wrap",    // wrap when no more horizontal space
+            flexWrap: "wrap",
             gap: "18px",
             justifyContent: "flex-start",
             padding: "12px",
@@ -221,7 +188,6 @@ function App() {
           }}
         >
           {technologies.map((tech, i) => {
-            // build src with fallback and extension if missing
             const hasSrc = tech.logoSrc && tech.logoSrc.trim() !== "";
             const maybeWithExt = hasSrc
               ? tech.logoSrc.endsWith(".png") || tech.logoSrc.endsWith(".jpg") || tech.logoSrc.endsWith(".svg")
@@ -237,7 +203,6 @@ function App() {
                     alt={tech.name + " logo"}
                     loading="lazy"
                     onError={(e) => {
-                      // fallback to placeholder if the image fails to load
                       e.currentTarget.onerror = null;
                       e.currentTarget.src = "/logos/placeholder.png";
                     }}
@@ -250,7 +215,7 @@ function App() {
         </div>
       </div>
 
-
+      {/* Toggle Work / Education */}
       <div
         style={{
           position: "relative",
@@ -310,7 +275,7 @@ function App() {
           marginTop: "10px",
           width: "90%",
           maxWidth: "800px",
-          border: "1px solid #2A2F3A",
+          border: "2px solid #2A2F3A",
           backdropFilter: "blur(10px)",
           borderRadius: "12px",
           padding: "16px",
@@ -318,24 +283,17 @@ function App() {
           boxSizing: "border-box"
         }}
       >
-
-        {/* ---- WORK PANEL ---- */}
+        {/* WORK PANEL */}
         {active === "work" && (
           <div className="work-list">
             {workData.map((job, i) => (
               <article className="work-card" key={i}>
-                {/* Left logo */}
                 <div className="work-left">
                   <div className="work-logo">
-                    <img
-                      src={job.logoSrc}
-                      alt={`${job.company} logo`}
-                      loading="lazy"
-                    />
+                    <img src={job.logoSrc} alt={`${job.company} logo`} loading="lazy" />
                   </div>
                 </div>
 
-                {/* Right content */}
                 <div className="work-main">
                   <div className="work-header">
                     <h3 className="work-company">{job.company}</h3>
@@ -355,8 +313,7 @@ function App() {
           </div>
         )}
 
-
-        {/* ---- EDUCATION PANEL ---- */}
+        {/* EDUCATION PANEL */}
         {active === "education" && (
           <div className="education-list">
             {educationData.map((edu, i) => (
@@ -382,14 +339,70 @@ function App() {
             ))}
           </div>
         )}
-
-        
       </div>
+
+      {/* Projects Heading + Grid (implemented same style as work/education) */}
       <h1 style={{ fontSize: "36px", margin: 0, fontWeight: 500, color: "white", marginTop: "100px" }}>
         My Projects
       </h1>
+
+      <div style={{ width: "90%", maxWidth: 800, margin: "20px auto 60px auto" }}>
+        <div className="projects-grid">
+          {projects.map((project, index) => (
+            <article className="project-card" key={index}>
+
+              {/* Media: prefer video, then image, else placeholder */}
+              {project.videoSrc ? (
+                <video
+                  src={project.videoSrc}
+                  controls
+                  className="project-media"
+                  poster={project.poster || ""}
+                />
+              ) : project.imageSrc ? (
+                <img
+                  src={project.imageSrc}
+                  alt={project.name}
+                  className="project-media"
+                />
+              ) : (
+                <div className="project-placeholder">No Media</div>
+              )}
+
+              <div className="project-body">
+                <h3 className="project-title">{project.name}</h3>
+
+                <p className="project-description">{project.description}</p>
+
+                <div className="project-tech-list">
+                  {project.technologies.map((tech, i) => (
+                    <span key={i} className="project-tech">{tech}</span>
+                  ))}
+                </div>
+
+                {/* GitHub / Source link */}
+                {project.source ? (
+                  <a
+                    href={project.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="project-github-btn"
+                  >
+                    <img src="/logos/github1.png" alt="GitHub" />
+                    <span>Source</span>
+                  </a>
+                ) : (
+                  <span className="project-link-disabled">No repo</span>
+                )}
+
+
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
     </div>
-    
   );
 }
 
