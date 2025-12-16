@@ -7,8 +7,8 @@ function App() {
 
   const workData = [
     {
-      company: "iMAPS Research Lab",
-      position: "Owner",
+      company: "Columbia Custom PCs LLC",
+      position: "Software Engineer / Staff Researcher",
       startDate: "Jun 2024",
       endDate: "Present",
       bullets: [
@@ -20,8 +20,8 @@ function App() {
     },
 
     {
-      company: "Columbia Custom PCs LLC",
-      position: "Software Engineer / Staff Researcher",
+      company: "iMAPS Research Lab",
+      position: "Owner / Founder",
       startDate: "Aug 2023",
       endDate: "present",
       bullets: [
@@ -40,22 +40,225 @@ function App() {
       grade: "GPA: 3.5",
       logoSrc: "/logos/uofsc_logo.jfif"
     }];
+  const technologies = [
+    {
+      name: "Java",
+      logoSrc: "/logos/java"
+    },
+    {
+      name: "Python",
+      logoSrc: "/logos/python"
+    },
+    {
+      name: "C++",
+      logoSrc: "/logos/c++"
+    },
+    {
+      name: "React",
+      logoSrc: "/logos/react"
+    },
+    {
+      name: "Git",
+      logoSrc: "/logos/git"
+    },
+    {
+      name: "GitHub",
+      logoSrc: "/logos/github"
+    },
+    {
+      name: "Linux",
+      logoSrc: "/logos/linux"
+    },
+    {
+      name: "Windows",
+      logoSrc: "/logos/windows"
+    },
+    {
+      name: "Javascript",
+      logoSrc: "/logos/javascript"
+    },
+    {
+      name: "Firebase",
+      logoSrc: "/logos/firebase"
+    },
+    {
+      name: "Unity",
+      logoSrc: "/logos/unity"
+    }
+  ]
 
   return (
     <div className="App" style={{ height: "100vh", position: "relative" }}>
+
+
       <header className="App-header">
-        <h1>My Portfolio</h1>
-        <p>Scroll down to view work & education</p>
+        <div
+          style={{
+            width: "90%",
+            maxWidth: "900px",
+            margin: "20px auto 0 auto",
+            paddingLeft: "110px",
+            textAlign: "left",
+            color: "white"
+
+          }}
+        >
+          <h1 style={{ fontSize: "48px", margin: 0, fontWeight: 600 }}>
+            James Tabakian
+          </h1>
+
+          <p style={{ fontSize: "24px", margin: "10px 0 0 0", color: "#8c8e91ff" }}>
+            Software Engineer
+          </p>
+
+          <div style={{ display: "flex", alignItems: "center", marginTop: "14px" }}>
+            <span
+              style={{
+                width: "18px",
+                height: "18px",
+                display: "inline-block",
+                marginRight: "8px"
+              }}
+            >
+              📍
+            </span>
+            <p style={{ fontSize: "18px", margin: 0, color: "#9aa0ab" }}>
+              Columbia, SC
+            </p>
+
+
+          </div>
+
+          {/* Social + Resume Buttons */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+            marginTop: "22px"
+          }}>
+
+            {/* Resume Button */}
+            <a
+              href="/James Tabakian Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                border: "1px solid #d1d5de",
+                padding: "2px 24px",
+                borderRadius: "6px",
+                fontSize: "18px",
+                color: "#d1d5de",
+                textDecoration: "none",
+                fontWeight: 500
+              }}
+            >
+              <img
+                src="/logos/download.png"
+                alt="Resume Icon"
+                style={{ width: "20px", height: "20px" }}
+              />
+              Resume
+            </a>
+
+            {/* LinkedIn Icon */}
+            <a href="https://www.linkedin.com/in/yourprofile" target="_blank">
+              <img
+                src="/logos/linkedin.png"
+                alt="LinkedIn"
+                style={{ width: "32px", height: "32px" }}
+              />
+            </a>
+
+
+            {/* GitHub Icon */}
+            <a href="https://github.com/yourprofile" target="_blank">
+              <img
+                src="/logos/github.png"
+                alt="GitHub"
+                style={{ width: "32px", height: "32px" }}
+              />
+            </a>
+
+
+
+          </div>
+
+        </div>
       </header>
+
+      <button className="loop-glow-btn">
+        My Projects
+      </button>
+
+      {/* --- TECH / PROJECTS PANEL --- */}
+      <h1 style={{ fontSize: "36px", margin: 0, fontWeight: 500, color: "white", marginTop: "200px" }}>
+        My Technologies
+      </h1>
+      <div
+        style={{
+          marginTop: "28px",
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+
+        <div
+          id="tech-container"
+          style={{
+            width: "90%",
+            maxWidth: 800,
+            display: "flex",
+            flexWrap: "wrap",    // wrap when no more horizontal space
+            gap: "18px",
+            justifyContent: "flex-start",
+            padding: "12px",
+            boxSizing: "border-box",
+            marginBottom: "8px",
+          }}
+        >
+          {technologies.map((tech, i) => {
+            // build src with fallback and extension if missing
+            const hasSrc = tech.logoSrc && tech.logoSrc.trim() !== "";
+            const maybeWithExt = hasSrc
+              ? tech.logoSrc.endsWith(".png") || tech.logoSrc.endsWith(".jpg") || tech.logoSrc.endsWith(".svg")
+                ? tech.logoSrc
+                : `${tech.logoSrc}.png`
+              : "/logos/placeholder.png";
+
+            return (
+              <article className="tech-card" key={i} title={tech.name}>
+                <div className="tech-logo-wrap">
+                  <img
+                    src={maybeWithExt}
+                    alt={tech.name + " logo"}
+                    loading="lazy"
+                    onError={(e) => {
+                      // fallback to placeholder if the image fails to load
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "/logos/placeholder.png";
+                    }}
+                  />
+                </div>
+                <div className="tech-name">{tech.name}</div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+
 
       <div
         style={{
-          position: "fixed",
+          position: "relative",
           left: "50%",
+          marginTop: "50px",
           transform: "translateX(-50%)",
-          top: "600px",
           width: "90%",
-          maxWidth: "900px",
+          maxWidth: "800px",
           display: "flex",
           gap: "10px",
           padding: "1px",
@@ -99,14 +302,14 @@ function App() {
       </div>
 
       <div
+        className="work-edu-container"
         style={{
-          position: "fixed",
+          position: "relative",
           left: "50%",
           transform: "translateX(-50%)",
-          top: "calc(600px + 50px)",
+          marginTop: "10px",
           width: "90%",
-          maxWidth: "900px",
-          background: "#01050F",
+          maxWidth: "800px",
           border: "1px solid #2A2F3A",
           backdropFilter: "blur(10px)",
           borderRadius: "12px",
@@ -115,6 +318,7 @@ function App() {
           boxSizing: "border-box"
         }}
       >
+
         {/* ---- WORK PANEL ---- */}
         {active === "work" && (
           <div className="work-list">
@@ -179,9 +383,13 @@ function App() {
           </div>
         )}
 
-
+        
       </div>
+      <h1 style={{ fontSize: "36px", margin: 0, fontWeight: 500, color: "white", marginTop: "100px" }}>
+        My Projects
+      </h1>
     </div>
+    
   );
 }
 
