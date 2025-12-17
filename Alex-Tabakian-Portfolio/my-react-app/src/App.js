@@ -1,9 +1,76 @@
 import './App.css';
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import GlowButton from "./GlowButton";
+import ContactForm from "./ContactForm";
 
 // ----------------- App component -----------------
 function App() {
+
+  function Sidebar() {
+    const sections = [
+      { id: "home", label: "Home" },
+      { id: "skills", label: "Skills" },
+      { id: "work", label: "Work" },
+      { id: "projects", label: "Projects" }
+    ];
+
+    const [active, setActive] = useState("home");
+
+    // Scroll listener (scrollspy)
+    useEffect(() => {
+      const onScroll = () => {
+        let current = "home";
+
+        sections.forEach(sec => {
+          const element = document.getElementById(sec.id);
+          if (!element) return;
+
+          const top = element.getBoundingClientRect().top;
+          if (top <= 150) current = sec.id;
+        });
+
+        setActive(current);
+      };
+
+      window.addEventListener("scroll", onScroll);
+      return () => window.removeEventListener("scroll", onScroll);
+    }, []);
+
+    return (
+      <nav
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "20px",
+          transform: "translateY(-50%)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "14px",
+          zIndex: 9999
+        }}
+      >
+        {sections.map(sec => (
+          <a
+            key={sec.id}
+            href={`#${sec.id}`}
+            style={{
+              padding: "8px 12px",
+              borderRadius: "8px",
+              textDecoration: "none",
+              color: active === sec.id ? "white" : "#9aa0ab",
+              background: active === sec.id ? "#2A2F3A" : "transparent",
+              border: active === sec.id ? "1px solid #2A2F3A" : "none",
+              fontWeight: 500,
+              transition: "0.2s"
+            }}
+          >
+            {sec.label}
+          </a>
+        ))}
+      </nav>
+    );
+  }
+
   const [active, setActive] = useState("work");
 
   const workData = [
@@ -13,9 +80,7 @@ function App() {
       startDate: "Jun 2024",
       endDate: "Present",
       bullets: [
-        "Generated over $100,000 in revenue by assembling and selling 150+ fully customized PCs tailored to performance and budget requirements.",
-        "Built a full-stack inventory and sales management system with real-time analytics, automated stock tracking, and a business insights dashboard.",
-        "Created detailed build logs, benchmarks, and troubleshooting documentation, improving customer support efficiency and reducing post-sale issues."
+        "Generated over $100K in revenue by building 150+ custom PCs and developed a full-stack inventory system with real-time analytics and automated tracking. Also produced detailed build logs and benchmarks that improved support efficiency and reduced post-sale issues."
       ],
       logoSrc: "/logos/uofsc_logo.jfif"
     },
@@ -26,9 +91,7 @@ function App() {
       startDate: "Aug 2023",
       endDate: "present",
       bullets: [
-        "Rebuilt a 6,000+ line MATLAB application into a modern, multi-threaded C# system, achieving a 10× reduction in computation time.",
-        "Developed C++ control software for an automated ultrasonic-scanning robotic arm, integrating sensor feedback for precise, repeatable motion.",
-        "Designed a responsive WPF interface with real-time graph visualization and interactive controls, and collaborated with faculty and graduate researchers to integrate the software into NASA-funded ultrasonic wave analysis projects."
+        "Rebuilt a 6,000-line MATLAB tool into a multi-threaded C# system achieving 10× faster performance, developed C++ control software for an ultrasonic-scanning robotic arm, and designed a real-time WPF interface used in NASA-funded Non-Destructive Evaluation (NDE) research."
       ],
       logoSrc: "/logos/uofsc_logo.jfif"
     }
@@ -63,34 +126,47 @@ function App() {
       name: "Checkers Bot",
       description: "AI-driven Checkers bot that uses the Minimax algorithm. I have not beaten it yet.",
       videoSrc: "/media/CheckersBot.mp4",
-      technologies: ["Minimax","Alpha-Beta Pruning", "Java","Swing"],
-      source: "https://github.com/Alex-Tabakian/CheckersBot"
+      technologies: ["Minimax", "Alpha-Beta Pruning", "Java", "Swing"],
+      source: "https://github.com/Alex-Tabakian/CheckersBot",
+      demoJar: "/checkers/CheckerBot.jar"
     },
     {
       name: "PC Inventory Logger",
-      description: "description description description description description description",
-      imageSrc: "",
+      description: "PC inventory tracker that logs components, updates stock automatically, and keeps hardware organized.",
+      imageSrc: "/media/PcLogger1.png",
       technologies: ["JavaScript", "Firebase"],
-      source: ""
+      source: "https://github.com/Alex-Tabakian/CheckersBot"
     },
     {
       name: "Music App",
-      description: "description description description description description description",
+      description: "A JavaFX music player with account management, playlist support and full playback controls.",
       videoSrc: "",
       technologies: ["Java", "JavaFX", "JSON"],
       source: ""
+    },
+    {
+      name: "ASL Gesture Recognition",
+      description: "Built an ASL gesture classifier using PyTorch and AlexNet transfer learning, reaching 95% accuracy with optimized preprocessing and hyperparameters.",
+      imageSrc: "/media/sign language.webp",
+      technologies: ["Python", "Pytorch"],
+      source: "https://github.com/Alex-Tabakian/CSCE-580/tree/main/ProjectA"
     }
+
   ];
 
   return (
-    <div className="App" style={{ height: "100%", position: "relative" }}>
 
-      <header className="App-header">
+
+    <div className="App" style={{ height: "100%", position: "relative" }}>
+      <div className="shimmer-grid" aria-hidden="true"></div>
+      <Sidebar />
+
+      <header id="home" className="App-header">
         <div
           style={{
             width: "90%",
             maxWidth: "900px",
-            margin: "20px auto 0 auto",
+            margin: "-100px auto 0 auto",
             paddingLeft: "110px",
             textAlign: "left",
             color: "white"
@@ -105,18 +181,21 @@ function App() {
           </p>
 
           <div style={{ display: "flex", alignItems: "center", marginTop: "14px" }}>
-            <span style={{
-              width: "18px",
-              height: "18px",
-              display: "inline-block",
-              marginRight: "8px"
-            }}>
-              📍
-            </span>
+            <img
+              src="/logos/pin.png"
+              alt="Location pin"
+              style={{
+                width: "18px",
+                height: "18px",
+                marginRight: "8px",
+                objectFit: "contain"
+              }}
+            />
             <p style={{ fontSize: "18px", margin: 0, color: "#9aa0ab" }}>
               Columbia, SC
             </p>
           </div>
+
 
           {/* Social + Resume Buttons */}
           <div style={{
@@ -125,46 +204,58 @@ function App() {
             gap: "16px",
             marginTop: "22px"
           }}>
-            <a
-              href="/James Tabakian Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                border: "1px solid #d1d5de",
-                padding: "2px 24px",
-                borderRadius: "6px",
-                fontSize: "18px",
-                color: "#d1d5de",
-                textDecoration: "none",
-                fontWeight: 500
-              }}
-            >
-              <img src="/logos/download.png" alt="Resume Icon" style={{ width: "20px", height: "20px" }} />
-              Resume
-            </a>
-
-            <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">
-              <img src="/logos/linkedin.png" alt="LinkedIn" style={{ width: "32px", height: "32px" }} />
-            </a>
-
-            <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer">
-              <img src="/logos/github.png" alt="GitHub" style={{ width: "32px", height: "32px" }} />
-            </a>
+            <div className="person-contact">
+              <a
+                href="/James Tabakian Resume.pdf"
+                download="James-Tabakian-Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  border: "1px solid #d1d5de",
+                  padding: "2px 24px",
+                  borderRadius: "6px",
+                  fontSize: "18px",
+                  color: "#d1d5de",
+                  textDecoration: "none",
+                  fontWeight: 500,
+                  transform: "translateY(-3px)"
+                }}
+              >
+                <img src="/logos/downloadFile.png" alt="Resume Icon" style={{ width: "20px", height: "20px" }}/>
+                Resume
+              </a>
+            </div>
+            <div className="person-contact">
+              <a href="https://www.linkedin.com/in/james-tabakian-93a333283/" target="_blank" rel="noopener noreferrer">
+                <img src="/logos/linkedin.png" alt="LinkedIn" style={{ width: "32px", height: "32px" }} />
+              </a>
+            </div>
+            <div className="project-tech">
+              <a href="https://github.com/Alex-Tabakian" target="_blank" rel="noopener noreferrer">
+                <img src="/logos/github.png" alt="GitHub" style={{ width: "32px", height: "32px" }} />
+              </a>
+            </div>
           </div>
         </div>
       </header>
-
-      <button className="loop-glow-btn">
-        My Projects
-      </button>
-
       {/* --- TECH / PROJECTS PANEL --- */}
-      <h1 style={{ fontSize: "36px", margin: 0, fontWeight: 500, color: "white", marginTop: "200px" }}>
-        My Technologies
-      </h1>
+      <div
+        style={{
+          width: "90%",
+          maxWidth: "900px",
+          margin: "-25px auto 0 auto",   // top margin to match your spacing
+          paddingLeft: "110px",          // <<-- EXACT same left offset as header
+          textAlign: "left",
+          color: "white",
+        }}
+      >
+        <h1 id="skills" style={{ fontSize: "36px", margin: 0, fontWeight: 500 }}>
+          Skills
+        </h1>
+      </div>
       <div
         style={{
           marginTop: "28px",
@@ -177,7 +268,7 @@ function App() {
           id="tech-container"
           style={{
             width: "90%",
-            maxWidth: 800,
+            maxWidth: 850,
             display: "flex",
             flexWrap: "wrap",
             gap: "18px",
@@ -217,6 +308,7 @@ function App() {
 
       {/* Toggle Work / Education */}
       <div
+        id="work"
         style={{
           position: "relative",
           left: "50%",
@@ -342,9 +434,21 @@ function App() {
       </div>
 
       {/* Projects Heading + Grid (implemented same style as work/education) */}
-      <h1 style={{ fontSize: "36px", margin: 0, fontWeight: 500, color: "white", marginTop: "100px" }}>
-        My Projects
-      </h1>
+      {/* Projects heading wrapped in same container as header */}
+      <div
+        style={{
+          width: "90%",
+          maxWidth: "900px",
+          margin: "100px auto 0 auto",   // top margin to match your spacing
+          paddingLeft: "110px",          // <<-- EXACT same left offset as header
+          textAlign: "left",
+          color: "white",
+        }}
+      >
+        <h1 id="projects" style={{ fontSize: "36px", margin: 0, fontWeight: 500 }}>
+          Projects
+        </h1>
+      </div>
 
       <div style={{ width: "90%", maxWidth: 800, margin: "20px auto 60px auto" }}>
         <div className="projects-grid">
@@ -376,33 +480,45 @@ function App() {
 
                 <div className="project-tech-list">
                   {project.technologies.map((tech, i) => (
-                    <span key={i} className="project-tech">{tech}</span>
+                    <div className="project-tech" key={i}>
+                      {tech}
+                    </div>
                   ))}
                 </div>
 
                 {/* GitHub / Source link */}
-                {project.source ? (
-                  <a
-                    href={project.source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="project-github-btn"
-                  >
-                    <img src="/logos/github1.png" alt="GitHub" />
-                    <span>Source</span>
-                  </a>
-                ) : (
-                  <span className="project-link-disabled">No repo</span>
-                )}
+                <div className="project-actions">
+                  {project.source ? (
+                    <a
+                      href={project.source}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-github-btn"
+                    >
+                      <img src="/logos/github1.png" alt="GitHub" />
+                      <span>Source</span>
+                    </a>
+                  ) : (
+                    <span className="project-link-disabled">No repo</span>
+                  )}
 
-
+                  {/* Only show GlowButton if demoJar exists */}
+                  {project.demoJar && (
+                    <GlowButton className="demo-btn">
+                      Click Me
+                    </GlowButton>
+                  )}
+                </div>
               </div>
             </article>
           ))}
-        </div>
-      </div>
 
+
+        </div>
+        <ContactForm />
+      </div>
     </div>
+
   );
 }
 

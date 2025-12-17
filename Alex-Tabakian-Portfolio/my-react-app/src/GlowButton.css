@@ -1,0 +1,64 @@
+.svg-border-btn {
+  margin-top: 14px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 8px 8px;
+  cursor: pointer;
+  overflow: visible;
+  box-shadow: inset 0 0 14px rgba(0,0,0,0.75);
+  border-radius: inherit;
+}
+
+.label {
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.glow-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.segment {
+  stroke-linecap: butt;   /* butt so ends mathematically meet */
+  stroke-linejoin: miter;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 12px rgba(255,255,255,0.06));
+  animation-name: dashMove;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: var(--duration, 5s);
+  shape-rendering: geometricPrecision;
+}
+
+/* Each element has its own --start-offset variable (set inline).
+   Keyframes reference that variable so each path animates from its own start. */
+@keyframes dashMove {
+  from {
+    stroke-dashoffset: var(--start-offset, 0px);
+  }
+  to {
+    stroke-dashoffset: calc(var(--start-offset, 0px) - var(--perimeter, 600px));
+  }
+}
+
+.svg-border-btn:hover .segment {
+  filter: drop-shadow(0 0 18px rgba(255,255,255,0.12));
+}
+
+.svg-border-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0,231,255,0.06);
+}

@@ -50,8 +50,27 @@ html, body, #root {
   margin: 4px 0;
   font-size: 24px;
   color: rgb(182, 176, 176);
-}.work-edu-container {
+}
+
+.work-edu-container {
   position: relative; /* required for pseudo-element */
+}
+.project-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* spacing between the buttons */
+}
+
+/* Optional: keep the GitHub button and GlowButton visually aligned */
+.project-github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Optional: push GlowButton to the extreme right of the card */
+.project-actions.space-between {
+  justify-content: space-between;
 }
 
 /* The vertical timeline line */
@@ -73,13 +92,21 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 86px;              /* keeps cards small */
+  width: 86px;
   text-align: center;
   color: #ffffff;
   font-family: inherit;
   font-size: 13px;
   user-select: none;
+
+  /* ADD THIS */
+  transition: transform 0.2s ease;
 }
+
+.tech-card:hover {
+  transform: scale(1.08);
+}
+
 
 .tech-logo-wrap {
   position: relative;
@@ -358,6 +385,29 @@ html, body, #root {
 }
 
 .project-tech {
+  padding: 4px 10px;
+  background: #2A2F3A;
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+
+  /* so expanding doesn't push others around awkwardly */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.person-contact {
+   transition: transform 0.2s ease;
+}
+
+.person-contact:hover {
+   transform: translateY(-1px);
+}
+.project-tech:hover {
+  transform: translateY(-2px);
+}
+
+
+.project-tech {
   display: inline-block;
   padding: 5px 8px;
   background: rgba(255,255,255,0.04);
@@ -428,6 +478,91 @@ html, body, #root {
   display: inline-block;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* Shimmer grid background - fixed behind content */
+.shimmer-grid {
+  position: fixed;
+  inset: 0;                    /* full-bleed */
+  pointer-events: none;        /* let mouse events pass through */
+  z-index: 0;                  /* behind your app content (raise content to z-index > 0) */
+
+  /* grid base (subtle lines) */
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      rgba(255,255,255,0.02) 0px,
+      rgba(255,255,255,0.02) 1px,
+      transparent 1px,
+      transparent 40px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.02) 0px,
+      rgba(255,255,255,0.02) 1px,
+      transparent 1px,
+      transparent 40px
+    );
+
+  /* place shimmer overlay as separate layer with mask to keep it subtle */
+  background-color: transparent;
+  isolation: isolate;
+}
+
+/* pseudo for the shimmering sweep */
+.shimmer-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.01) 30%,
+    rgba(255, 255, 255, 0.03) 45%,
+    rgba(255, 255, 255, 0.07) 50%,
+    rgba(255, 255, 255, 0.03) 55%,
+    rgba(255, 255, 255, 0.01) 70%,
+    rgba(255, 255, 255, 0) 100%
+  );
+
+  transform: translateX(-120%) translateY(0);
+  filter: blur(40px);         /* smoother glow */
+  opacity: 0.6;
+  will-change: transform, opacity;
+  mix-blend-mode: screen;     /* softer blend than overlay */
+  transition: opacity 0.3s ease-out;
+}
+
+
+/* animation: sweep the shimmer across */
+@keyframes shimmer-sweep {
+  from { transform: translateX(-120%) translateY(-5%); opacity: 0.6; }
+  50%  { opacity: 0.95; }
+  to   { transform: translateX(120%) translateY(5%); opacity: 0.6; }
+}
+
+.shimmer-grid::before {
+  content: none !important;
+  animation: none !important;
+}
+
+/* subtle parallax movement that reacts to mouse (optional) */
+.shimmer-grid[data-mx]::before {
+  /* read CSS variables set by JS for a tiny parallax shift */
+  transform: translateX(calc(var(--mx, -120%))) translateY(calc(var(--my, -5%)));
+}
+
+/* reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-grid::before {
+    content: none !important;
+    animation: none !important;
+  }
+}
 
 /* Responsive: 1 column on small screens */
 @media (max-width: 720px) {
