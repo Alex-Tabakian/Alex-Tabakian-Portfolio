@@ -1,36 +1,167 @@
 import './App.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import GlowButton from "./GlowButton";
+import ContactForm from "./ContactForm";
 
+// ----------------- App component -----------------
 function App() {
+
+
+  function Sidebar() {
+  // initial sections (yOffset in pixels)
+  const initial = [
+    { id: "home", label: "Home", yOffset: 0 },
+    { id: "skills", label: "Skills", yOffset: 400 },
+    { id: "work", label: "Work", yOffset: 200 },
+    { id: "projects", label: "Projects", yOffset: 440 },
+    { id: "contact", label: "Contact", yOffset: 0 }
+  ];
+
+  // load saved offsets from localStorage if present
+  const [sections, setSections] = useState(() => {
+    try {
+      const raw = localStorage.getItem("sidebarSections");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        // merge with initial to ensure all fields exist
+        return initial.map(init => ({ ...init, ...(parsed.find(p => p.id === init.id) || {}) }));
+      }
+    } catch (e) {}
+    return initial;
+  });
+
+  const [active, setActive] = useState(sections[0].id);
+
+  // persist sections (only offsets really change) whenever they update
+  useEffect(() => {
+    try {
+      localStorage.setItem("sidebarSections", JSON.stringify(sections));
+    } catch (e) {}
+  }, [sections]);
+
+  // Detect which section is centered (uses section.yOffset)
+  const detectCenteredSection = () => {
+    const viewportMid = window.innerHeight / 2;
+    let closestSection = sections[0].id;
+    let closestDistance = Infinity;
+
+    sections.forEach(sec => {
+      const element = document.getElementById(sec.id);
+      if (!element) return;
+
+      const rect = element.getBoundingClientRect();
+      const sectionMid = rect.top + rect.height / 2 + (sec.yOffset || 0);
+      const distance = Math.abs(sectionMid - viewportMid);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestSection = sec.id;
+      }
+    });
+
+    setActive(closestSection);
+  };
+
+  // Scroll listener (scrollspy)
+  useEffect(() => {
+    const onScroll = () => detectCenteredSection();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [sections]);
+
+  // Handle clicking a sidebar button - scroll so section midpoint + yOffset sits at viewport center
+  const handleClick = (id) => {
+    const sec = sections.find(s => s.id === id);
+    if (!sec) return;
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    const rect = element.getBoundingClientRect();
+    const currentScroll = window.scrollY || window.pageYOffset;
+    const targetY =
+      currentScroll +
+      rect.top +
+      rect.height / 2 -
+      window.innerHeight / 2 +
+      (sec.yOffset || 0);
+
+    window.scrollTo({
+      top: Math.max(0, Math.round(targetY)),
+      behavior: "smooth"
+    });
+
+    setTimeout(() => detectCenteredSection(), 350);
+  };
+
+  return (
+    <nav
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "20px",
+        transform: "translateY(-50%)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "12px",
+        zIndex: 9999,
+        padding: 4
+      }}
+    >
+      {sections.map(sec => (
+        <button
+          key={sec.id}
+          onClick={() => handleClick(sec.id)}
+          className="sidebar-btn"
+          style={{
+            padding: "8px 12px",
+            borderRadius: "8px",
+            background: active === sec.id ? "#2A2F3A" : "transparent",
+            border: active === sec.id ? "1px solid #2A2F3A" : "1px solid transparent",
+            color: active === sec.id ? "white" : "#9aa0ab",
+            fontWeight: 500,
+            textAlign: "left",
+            cursor: "pointer",
+            transition: "0.15s",
+            minWidth: 90
+          }}
+        >
+          {sec.label}
+        </button>
+      ))}
+    </nav>
+  );
+}
+
+
+
+
   const [active, setActive] = useState("work");
 
   const workData = [
     {
-      company: "iMAPS Research Lab",
-      position: "Owner",
+      company: "Columbia Custom PCs LLC",
+      position: "Software Engineer / Staff Researcher",
       startDate: "Jun 2024",
       endDate: "Present",
       bullets: [
-        "Generated over $100,000 in revenue by assembling and selling 150+ fully customized PCs tailored to performance and budget requirements.",
-        "Built a full-stack inventory and sales management system with real-time analytics, automated stock tracking, and a business insights dashboard.",
-        "Created detailed build logs, benchmarks, and troubleshooting documentation, improving customer support efficiency and reducing post-sale issues."
+        "Generated over $100K in revenue by building 150+ custom PCs and developed a full-stack inventory system with real-time analytics and automated tracking. Also produced detailed build logs and benchmarks that improved support efficiency and reduced post-sale issues."
       ],
       logoSrc: "/logos/uofsc_logo.jfif"
     },
 
     {
-      company: "Columbia Custom PCs LLC",
-      position: "Software Engineer / Staff Researcher",
+      company: "iMAPS Research Lab",
+      position: "Owner / Founder",
       startDate: "Aug 2023",
       endDate: "present",
       bullets: [
-        "Rebuilt a 6,000+ line MATLAB application into a modern, multi-threaded C# system, achieving a 10× reduction in computation time.",
-        "Developed C++ control software for an automated ultrasonic-scanning robotic arm, integrating sensor feedback for precise, repeatable motion.",
-        "Designed a responsive WPF interface with real-time graph visualization and interactive controls, and collaborated with faculty and graduate researchers to integrate the software into NASA-funded ultrasonic wave analysis projects."
+        "Rebuilt a 6,000-line MATLAB tool into a multi-threaded C# system achieving 10× faster performance, developed C++ control software for an ultrasonic-scanning robotic arm, and designed a real-time WPF interface used in NASA-funded Non-Destructive Evaluation (NDE) research."
       ],
       logoSrc: "/logos/uofsc_logo.jfif"
     }
   ];
+
   const educationData = [
     {
       school: "University of South Carolina",
@@ -38,23 +169,231 @@ function App() {
       date: "2023 - 2026",
       grade: "GPA: 3.5",
       logoSrc: "/logos/uofsc_logo.jfif"
-    }];
+    }
+  ];
+
+  const technologies = [
+    // Programming Languages
+    { name: "Java", logoSrc: "/logos/java", category: "Languages" },
+    { name: "Python", logoSrc: "/logos/python", category: "Languages" },
+    { name: "C++", logoSrc: "/logos/c++", category: "Languages" },
+    { name: "C#", logoSrc: "/logos/cSharp", category: "Languages" },
+    { name: "Javascript", logoSrc: "/logos/javascript", category: "Languages" },
+
+    // Frontend / Web
+    { name: "React", logoSrc: "/logos/react", category: "Frontend" },
+    { name: "CSS", logoSrc: "/logos/css", category: "Frontend" },
+
+    // Tools & Version Control
+    { name: "Git", logoSrc: "/logos/git", category: "Tools" },
+    { name: "GitHub", logoSrc: "/logos/github", category: "Tools" },
+
+    // Backend / Cloud
+    { name: "Firebase", logoSrc: "/logos/firebase", category: "Cloud" },
+
+    // Game Development
+    { name: "Unity", logoSrc: "/logos/unity", category: "Game Development" },
+
+    // Operating Systems
+    { name: "Linux", logoSrc: "/logos/linux", category: "Operating Systems" },
+    { name: "Windows", logoSrc: "/logos/windows", category: "Operating Systems" }
+  ];
+
+  const projects = [
+    {
+      name: "Checkers Bot",
+      description: "AI-driven Checkers bot that uses the Minimax algorithm. I have not beaten it yet.",
+      videoSrc: "/media/CheckersBot.mp4",
+      technologies: ["Minimax", "Alpha-Beta Pruning", "Java", "Swing"],
+      source: "https://github.com/Alex-Tabakian/CheckersBot",
+      demoJar: "/checkers/CheckerBot.jar"
+    },
+    {
+      name: "PC Inventory Logger",
+      description: "PC inventory tracker that logs components, updates stock automatically, and keeps hardware organized.",
+      imageSrc: "/media/PcLogger.png",
+      technologies: ["JavaScript", "Firebase"],
+      source: "https://github.com/Alex-Tabakian/CheckersBot"
+    },
+    {
+      name: "Music App",
+      description: "A JavaFX music player that supports account login, playlist creation, and other features. The application handles local audio files and manages user playlists.",
+      imageSrc: "/media/HiNote.png",
+      technologies: ["Java", "JavaFX", "JSON"],
+      source: "https://github.com/ijacobr/theHiNote"
+    },
+    {
+      name: "ASL Gesture Recognition",
+      description: "Built an ASL gesture classifier using PyTorch and AlexNet transfer learning, reaching 95% accuracy with optimized preprocessing and hyperparameters.",
+      imageSrc: "/media/sign language.webp",
+      technologies: ["Python", "Pytorch"],
+      source: "https://github.com/Alex-Tabakian/CSCE-580/tree/main/ProjectA"
+    }
+
+  ];
 
   return (
-    <div className="App" style={{ height: "100vh", position: "relative" }}>
-      <header className="App-header">
-        <h1>My Portfolio</h1>
-        <p>Scroll down to view work & education</p>
-      </header>
 
+
+    <div className="App" style={{ height: "100%", position: "relative" }}>
+      <div className="shimmer-grid" aria-hidden="true"></div>
+      <Sidebar />
+
+      <header id="home" className="App-header">
+        <div
+          style={{
+            width: "90%",
+            maxWidth: "900px",
+            margin: "-100px auto 0 auto",
+            paddingLeft: "110px",
+            textAlign: "left",
+            color: "white"
+          }}
+        >
+          <h1 style={{ fontSize: "48px", margin: 0, fontWeight: 600 }}>
+            James Tabakian
+          </h1>
+
+          <p style={{ fontSize: "24px", margin: "10px 0 0 0", color: "#8c8e91ff" }}>
+            Software Engineer
+          </p>
+
+          <div style={{ display: "flex", alignItems: "center", marginTop: "14px" }}>
+            <img
+              src="/logos/pin.png"
+              alt="Location pin"
+              style={{
+                width: "18px",
+                height: "18px",
+                marginRight: "8px",
+                objectFit: "contain"
+              }}
+            />
+            <p style={{ fontSize: "18px", margin: 0, color: "#9aa0ab" }}>
+              Columbia, SC
+            </p>
+          </div>
+
+
+          {/* Social + Resume Buttons */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+            marginTop: "22px"
+          }}>
+            <div className="person-contact">
+              <a
+                href="/James Tabakian Resume.pdf"
+                download="James-Tabakian-Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  border: "1px solid #d1d5de",
+                  padding: "2px 24px",
+                  borderRadius: "6px",
+                  fontSize: "18px",
+                  color: "#d1d5de",
+                  textDecoration: "none",
+                  fontWeight: 500,
+                  transform: "translateY(-3px)"
+                }}
+              >
+                <img src="/logos/downloadFile.png" alt="Resume Icon" style={{ width: "20px", height: "20px" }} />
+                Resume
+              </a>
+            </div>
+            <div className="person-contact">
+              <a href="https://www.linkedin.com/in/james-tabakian-93a333283/" target="_blank" rel="noopener noreferrer">
+                <img src="/logos/linkedin.png" alt="LinkedIn" style={{ width: "32px", height: "32px" }} />
+              </a>
+            </div>
+            <div className="project-tech">
+              <a href="https://github.com/Alex-Tabakian" target="_blank" rel="noopener noreferrer">
+                <img src="/logos/github.png" alt="GitHub" style={{ width: "32px", height: "32px" }} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+      {/* --- TECH / PROJECTS PANEL --- */}
       <div
         style={{
-          position: "fixed",
-          left: "50%",
-          transform: "translateX(-50%)",
-          top: "600px",
           width: "90%",
           maxWidth: "900px",
+          margin: "-25px auto 0 auto",   // top margin to match your spacing
+          paddingLeft: "110px",          // <<-- EXACT same left offset as header
+          textAlign: "left",
+          color: "white",
+        }}
+      >
+        <h1 id="skills" style={{ fontSize: "36px", margin: 0, fontWeight: 500 }}>
+          Skills
+        </h1>
+      </div>
+      <div
+        style={{
+          marginTop: "28px",
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <div
+          id="tech-container"
+          style={{
+            width: "90%",
+            maxWidth: 850,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "18px",
+            justifyContent: "flex-start",
+            padding: "12px",
+            boxSizing: "border-box",
+            marginBottom: "8px",
+          }}
+        >
+          {technologies.map((tech, i) => {
+            const hasSrc = tech.logoSrc && tech.logoSrc.trim() !== "";
+            const maybeWithExt = hasSrc
+              ? tech.logoSrc.endsWith(".png") || tech.logoSrc.endsWith(".jpg") || tech.logoSrc.endsWith(".svg")
+                ? tech.logoSrc
+                : `${tech.logoSrc}.png`
+              : "/logos/placeholder.png";
+
+            return (
+              <article className="tech-card" key={i} title={tech.name}>
+                <div className="tech-logo-wrap">
+                  <img
+                    src={maybeWithExt}
+                    alt={tech.name + " logo"}
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "/logos/placeholder.png";
+                    }}
+                  />
+                </div>
+                <div className="tech-name">{tech.name}</div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Toggle Work / Education */}
+      <div
+        id="work"
+        style={{
+          position: "relative",
+          left: "50%",
+          marginTop: "50px",
+          transform: "translateX(-50%)",
+          width: "90%",
+          maxWidth: "800px",
           display: "flex",
           gap: "10px",
           padding: "1px",
@@ -98,15 +437,15 @@ function App() {
       </div>
 
       <div
+        className="work-edu-container"
         style={{
-          position: "fixed",
+          position: "relative",
           left: "50%",
           transform: "translateX(-50%)",
-          top: "calc(600px + 50px)",
+          marginTop: "10px",
           width: "90%",
-          maxWidth: "900px",
-          background: "#01050F",
-          border: "1px solid #2A2F3A",
+          maxWidth: "800px",
+          border: "2px solid #2A2F3A",
           backdropFilter: "blur(10px)",
           borderRadius: "12px",
           padding: "16px",
@@ -114,23 +453,17 @@ function App() {
           boxSizing: "border-box"
         }}
       >
-        {/* ---- WORK PANEL ---- */}
+        {/* WORK PANEL */}
         {active === "work" && (
           <div className="work-list">
             {workData.map((job, i) => (
               <article className="work-card" key={i}>
-                {/* Left logo */}
                 <div className="work-left">
                   <div className="work-logo">
-                    <img
-                      src={job.logoSrc}
-                      alt={`${job.company} logo`}
-                      loading="lazy"
-                    />
+                    <img src={job.logoSrc} alt={`${job.company} logo`} loading="lazy" />
                   </div>
                 </div>
 
-                {/* Right content */}
                 <div className="work-main">
                   <div className="work-header">
                     <h3 className="work-company">{job.company}</h3>
@@ -150,8 +483,7 @@ function App() {
           </div>
         )}
 
-
-        {/* ---- EDUCATION PANEL ---- */}
+        {/* EDUCATION PANEL */}
         {active === "education" && (
           <div className="education-list">
             {educationData.map((edu, i) => (
@@ -177,10 +509,94 @@ function App() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Projects Heading + Grid (implemented same style as work/education) */}
+      {/* Projects heading wrapped in same container as header */}
+      <div
+        style={{
+          width: "90%",
+          maxWidth: "900px",
+          margin: "100px auto 0 auto",   // top margin to match your spacing
+          paddingLeft: "110px",          // <<-- EXACT same left offset as header
+          textAlign: "left",
+          color: "white",
+        }}
+      >
+        <h1 id="projects" style={{ fontSize: "36px", margin: 0, fontWeight: 500 }}>
+          Projects
+        </h1>
+      </div>
+
+      <div style={{ width: "90%", maxWidth: 800, margin: "20px auto 60px auto" }}>
+        <div className="projects-grid">
+          {projects.map((project, index) => (
+            <article className="project-card" key={index}>
+
+              {/* Media: prefer video, then image, else placeholder */}
+              {project.videoSrc ? (
+                <video
+                  src={project.videoSrc}
+                  controls
+                  className="project-media"
+                  poster={project.poster || ""}
+                />
+              ) : project.imageSrc ? (
+                <img
+                  src={project.imageSrc}
+                  alt={project.name}
+                  className="project-media"
+                />
+              ) : (
+                <div className="project-placeholder">No Media</div>
+              )}
+
+              <div className="project-body">
+                <h3 className="project-title">{project.name}</h3>
+
+                <p className="project-description">{project.description}</p>
+
+                <div className="project-tech-list">
+                  {project.technologies.map((tech, i) => (
+                    <div className="project-tech" key={i}>
+                      {tech}
+                    </div>
+                  ))}
+                </div>
+
+                {/* GitHub / Source link */}
+                <div className="project-actions">
+                  {project.source ? (
+                    <a
+                      href={project.source}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-github-btn"
+                    >
+                      <img src="/logos/github1.png" alt="GitHub" />
+                      <span>Source</span>
+                    </a>
+                  ) : (
+                    <span className="project-link-disabled">No repo</span>
+                  )}
+
+                  {/* Only show GlowButton if demoJar exists */}
+                  {project.demoJar && (
+                    <GlowButton className="demo-btn">
+                      Click Me
+                    </GlowButton>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
 
 
+        </div >
+        <ContactForm id="contact" />
       </div>
     </div>
+
   );
 }
 
