@@ -6,70 +6,135 @@ import ContactForm from "./ContactForm";
 // ----------------- App component -----------------
 function App() {
 
+
   function Sidebar() {
-    const sections = [
-      { id: "home", label: "Home" },
-      { id: "skills", label: "Skills" },
-      { id: "work", label: "Work" },
-      { id: "projects", label: "Projects" }
-    ];
+  // initial sections (yOffset in pixels)
+  const initial = [
+    { id: "home", label: "Home", yOffset: 0 },
+    { id: "skills", label: "Skills", yOffset: 400 },
+    { id: "work", label: "Work", yOffset: 200 },
+    { id: "projects", label: "Projects", yOffset: 440 },
+    { id: "contact", label: "Contact", yOffset: 0 }
+  ];
 
-    const [active, setActive] = useState("home");
+  // load saved offsets from localStorage if present
+  const [sections, setSections] = useState(() => {
+    try {
+      const raw = localStorage.getItem("sidebarSections");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        // merge with initial to ensure all fields exist
+        return initial.map(init => ({ ...init, ...(parsed.find(p => p.id === init.id) || {}) }));
+      }
+    } catch (e) {}
+    return initial;
+  });
 
-    // Scroll listener (scrollspy)
-    useEffect(() => {
-      const onScroll = () => {
-        let current = "home";
+  const [active, setActive] = useState(sections[0].id);
 
-        sections.forEach(sec => {
-          const element = document.getElementById(sec.id);
-          if (!element) return;
+  // persist sections (only offsets really change) whenever they update
+  useEffect(() => {
+    try {
+      localStorage.setItem("sidebarSections", JSON.stringify(sections));
+    } catch (e) {}
+  }, [sections]);
 
-          const top = element.getBoundingClientRect().top;
-          if (top <= 150) current = sec.id;
-        });
+  // Detect which section is centered (uses section.yOffset)
+  const detectCenteredSection = () => {
+    const viewportMid = window.innerHeight / 2;
+    let closestSection = sections[0].id;
+    let closestDistance = Infinity;
 
-        setActive(current);
-      };
+    sections.forEach(sec => {
+      const element = document.getElementById(sec.id);
+      if (!element) return;
 
-      window.addEventListener("scroll", onScroll);
-      return () => window.removeEventListener("scroll", onScroll);
-    }, []);
+      const rect = element.getBoundingClientRect();
+      const sectionMid = rect.top + rect.height / 2 + (sec.yOffset || 0);
+      const distance = Math.abs(sectionMid - viewportMid);
 
-    return (
-      <nav
-        style={{
-          position: "fixed",
-          top: "50%",
-          left: "20px",
-          transform: "translateY(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "14px",
-          zIndex: 9999
-        }}
-      >
-        {sections.map(sec => (
-          <a
-            key={sec.id}
-            href={`#${sec.id}`}
-            style={{
-              padding: "8px 12px",
-              borderRadius: "8px",
-              textDecoration: "none",
-              color: active === sec.id ? "white" : "#9aa0ab",
-              background: active === sec.id ? "#2A2F3A" : "transparent",
-              border: active === sec.id ? "1px solid #2A2F3A" : "none",
-              fontWeight: 500,
-              transition: "0.2s"
-            }}
-          >
-            {sec.label}
-          </a>
-        ))}
-      </nav>
-    );
-  }
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestSection = sec.id;
+      }
+    });
+
+    setActive(closestSection);
+  };
+
+  // Scroll listener (scrollspy)
+  useEffect(() => {
+    const onScroll = () => detectCenteredSection();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [sections]);
+
+  // Handle clicking a sidebar button - scroll so section midpoint + yOffset sits at viewport center
+  const handleClick = (id) => {
+    const sec = sections.find(s => s.id === id);
+    if (!sec) return;
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    const rect = element.getBoundingClientRect();
+    const currentScroll = window.scrollY || window.pageYOffset;
+    const targetY =
+      currentScroll +
+      rect.top +
+      rect.height / 2 -
+      window.innerHeight / 2 +
+      (sec.yOffset || 0);
+
+    window.scrollTo({
+      top: Math.max(0, Math.round(targetY)),
+      behavior: "smooth"
+    });
+
+    setTimeout(() => detectCenteredSection(), 350);
+  };
+
+  return (
+    <nav
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "20px",
+        transform: "translateY(-50%)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "12px",
+        zIndex: 9999,
+        padding: 4
+      }}
+    >
+      {sections.map(sec => (
+        <button
+          key={sec.id}
+          onClick={() => handleClick(sec.id)}
+          className="sidebar-btn"
+          style={{
+            padding: "8px 12px",
+            borderRadius: "8px",
+            background: active === sec.id ? "#2A2F3A" : "transparent",
+            border: active === sec.id ? "1px solid #2A2F3A" : "1px solid transparent",
+            color: active === sec.id ? "white" : "#9aa0ab",
+            fontWeight: 500,
+            textAlign: "left",
+            cursor: "pointer",
+            transition: "0.15s",
+            minWidth: 90
+          }}
+        >
+          {sec.label}
+        </button>
+      ))}
+    </nav>
+  );
+}
+
+
+
 
   const [active, setActive] = useState("work");
 
@@ -108,17 +173,30 @@ function App() {
   ];
 
   const technologies = [
-    { name: "Java", logoSrc: "/logos/java" },
-    { name: "Python", logoSrc: "/logos/python" },
-    { name: "C++", logoSrc: "/logos/c++" },
-    { name: "React", logoSrc: "/logos/react" },
-    { name: "Git", logoSrc: "/logos/git" },
-    { name: "GitHub", logoSrc: "/logos/github" },
-    { name: "Linux", logoSrc: "/logos/linux" },
-    { name: "Windows", logoSrc: "/logos/windows" },
-    { name: "Javascript", logoSrc: "/logos/javascript" },
-    { name: "Firebase", logoSrc: "/logos/firebase" },
-    { name: "Unity", logoSrc: "/logos/unity" }
+    // Programming Languages
+    { name: "Java", logoSrc: "/logos/java", category: "Languages" },
+    { name: "Python", logoSrc: "/logos/python", category: "Languages" },
+    { name: "C++", logoSrc: "/logos/c++", category: "Languages" },
+    { name: "C#", logoSrc: "/logos/cSharp", category: "Languages" },
+    { name: "Javascript", logoSrc: "/logos/javascript", category: "Languages" },
+
+    // Frontend / Web
+    { name: "React", logoSrc: "/logos/react", category: "Frontend" },
+    { name: "CSS", logoSrc: "/logos/css", category: "Frontend" },
+
+    // Tools & Version Control
+    { name: "Git", logoSrc: "/logos/git", category: "Tools" },
+    { name: "GitHub", logoSrc: "/logos/github", category: "Tools" },
+
+    // Backend / Cloud
+    { name: "Firebase", logoSrc: "/logos/firebase", category: "Cloud" },
+
+    // Game Development
+    { name: "Unity", logoSrc: "/logos/unity", category: "Game Development" },
+
+    // Operating Systems
+    { name: "Linux", logoSrc: "/logos/linux", category: "Operating Systems" },
+    { name: "Windows", logoSrc: "/logos/windows", category: "Operating Systems" }
   ];
 
   const projects = [
@@ -133,16 +211,16 @@ function App() {
     {
       name: "PC Inventory Logger",
       description: "PC inventory tracker that logs components, updates stock automatically, and keeps hardware organized.",
-      imageSrc: "/media/PcLogger1.png",
+      imageSrc: "/media/PcLogger.png",
       technologies: ["JavaScript", "Firebase"],
       source: "https://github.com/Alex-Tabakian/CheckersBot"
     },
     {
       name: "Music App",
-      description: "A JavaFX music player with account management, playlist support and full playback controls.",
-      videoSrc: "",
+      description: "A JavaFX music player that supports account login, playlist creation, and other features. The application handles local audio files and manages user playlists.",
+      imageSrc: "/media/HiNote.png",
       technologies: ["Java", "JavaFX", "JSON"],
-      source: ""
+      source: "https://github.com/ijacobr/theHiNote"
     },
     {
       name: "ASL Gesture Recognition",
@@ -224,7 +302,7 @@ function App() {
                   transform: "translateY(-3px)"
                 }}
               >
-                <img src="/logos/downloadFile.png" alt="Resume Icon" style={{ width: "20px", height: "20px" }}/>
+                <img src="/logos/downloadFile.png" alt="Resume Icon" style={{ width: "20px", height: "20px" }} />
                 Resume
               </a>
             </div>
@@ -514,8 +592,8 @@ function App() {
           ))}
 
 
-        </div>
-        <ContactForm />
+        </div >
+        <ContactForm id="contact" />
       </div>
     </div>
 

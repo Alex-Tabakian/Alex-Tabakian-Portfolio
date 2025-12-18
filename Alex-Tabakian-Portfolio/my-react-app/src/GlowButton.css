@@ -14,6 +14,9 @@
   border-radius: inherit;
 }
 
+.svg-border-btn:hover {
+  transform: translateY(-2px);
+}
 .label {
   position: relative;
   z-index: 3;
@@ -54,11 +57,10 @@
   }
 }
 
-.svg-border-btn:hover .segment {
-  filter: drop-shadow(0 0 18px rgba(255,255,255,0.12));
-}
 
 .svg-border-btn:focus {
   outline: none;
   box-shadow: 0 0 0 4px rgba(0,231,255,0.06);
 }
+
+

@@ -51,6 +51,12 @@ html, body, #root {
   font-size: 24px;
   color: rgb(182, 176, 176);
 }
+.sidebar-btn:hover {
+  background: #383d49 !important;
+  border-color: #383d49 !important;
+  color: white !important;
+  transform: translateX(3px);
+}
 
 .work-edu-container {
   position: relative; /* required for pseudo-element */

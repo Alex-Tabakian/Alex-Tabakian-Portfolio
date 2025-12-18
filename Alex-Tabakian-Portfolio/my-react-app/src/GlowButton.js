@@ -7,12 +7,42 @@ export default function GlowButton({
   width = 90,
   height = 31,
   radius = 14,
-  duration = 20.0,
+  duration = 10.0,
   strokeWidth = 2,
   overlapAdjust = -1
 }) {
   const pathRef = useRef(null);
   const [perimeter, setPerimeter] = useState(0);
+  const [running, setRunning] = useState(false);
+
+  // 👉 NEW: Function that calls backend to run your JAR
+  async function handleClick() {
+    if (running) return;
+    setRunning(true);
+
+    try {
+      const resp = await fetch("http://localhost:4001/api/run-checkers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+
+      const data = await resp.json();
+
+      const msg = [
+        `Exit code: ${data.exitCode}`,
+        data.stdout ? `Output:\n${data.stdout}` : "",
+        data.stderr ? `Errors:\n${data.stderr}` : ""
+      ]
+        .filter(Boolean)
+        .join("\n\n");
+
+      alert(msg || "Run completed (no output).");
+    } catch (err) {
+      alert("Error contacting backend:\n" + err.message);
+    } finally {
+      setRunning(false);
+    }
+  }
 
   function roundedRectPath(x, y, w, h, r) {
     const rx = Math.min(r, w / 2);
@@ -51,9 +81,12 @@ export default function GlowButton({
 
   const half = perimeter ? perimeter / 2 : 0;
   const dashLen = perimeter
-    ? Math.min(Math.floor(half + Math.round(strokeWidth / 2) + overlapAdjust), Math.floor(perimeter * 0.98))
+    ? Math.min(
+        Math.floor(half + Math.round(strokeWidth / 2) + overlapAdjust),
+        Math.floor(perimeter * 0.98)
+      )
     : 0;
-  const gap = perimeter ? Math.max(1, Math.floor(perimeter - dashLen)) : 1;;
+  const gap = perimeter ? Math.max(1, Math.floor(perimeter - dashLen)) : 1;
   const startA = 0;
   const startB = perimeter ? Math.round(perimeter / 2) : 0;
 
@@ -62,7 +95,6 @@ export default function GlowButton({
     ["--duration"]: `${duration}s`
   };
 
-  // center for gradient rotation
   const cx = width / 2;
   const cy = height / 2;
 
@@ -70,8 +102,10 @@ export default function GlowButton({
     <button
       className="glow-btn svg-border-btn"
       style={{ width: `${width}px`, height: `${height}px`, borderRadius: `${radius}px` }}
+      onClick={handleClick}     // 👉 NEW: Runs JAR via backend
+      disabled={running}        // prevents double-click
     >
-      <span className="label">{children}</span>
+      <span className="label">{running ? "Running..." : children}</span>
 
       <svg
         className="glow-svg"
@@ -82,7 +116,6 @@ export default function GlowButton({
         style={svgVars}
         aria-hidden="true"
       >
-        {/* reference path */}
         <path ref={pathRef} d={d} fill="none" stroke="none" strokeWidth={strokeWidth} />
 
         {perimeter > 0 && (
@@ -113,7 +146,6 @@ export default function GlowButton({
         )}
 
         <defs>
-          {/* Continuous gradient that will be rotated with animateTransform */}
           <linearGradient
             id="borderGradient"
             gradientUnits="userSpaceOnUse"
@@ -127,7 +159,6 @@ export default function GlowButton({
             <stop offset="45%" stopColor="#8a6bff" />
             <stop offset="70%" stopColor="#bf6bff" />
             <stop offset="100%" stopColor="#ff4ddb" />
-            {/* animate the gradient transform to rotate it around the button center */}
             <animateTransform
               attributeName="gradientTransform"
               type="rotate"
