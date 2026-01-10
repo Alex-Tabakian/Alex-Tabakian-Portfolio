@@ -5,8 +5,6 @@ import ContactForm from "./ContactForm";
 import ImageCarousel from "./ImageCarousel";
 import Sidebar from "./Sidebar";
 
-
-// ----------------- App component -----------------
 function App() {
   
   const [active, setActive] = useState("work");
@@ -65,13 +63,13 @@ function App() {
   ];
 
   const pcImages = [
-    { path: "/media/RTX3070Pc.png", text: "This is my favorite build that I have put together because of the unique case and vertical GPU mount.", specs: "RTX3070\nRyzen 7 5700X\n32GB DDR4"},
-    { path: "/media/RTX2080Pc.png", text: "This computer is memorable because it is the most profit that I have made on a sale. I paid roughly $400 for the parts and sold the pc for $800.", specs: "RTX 2080 Super\nIntel i9 9900\n32GB DDR4" },
+    { path: "/media/RTX3070Pc.png", text: "This is my favorite build because of the unique case and vertical GPU mount.", specs: "RTX 3070\nRyzen 7 5700X\n32GB DDR4"},
     { path: "/media/RTX4060Pc.png", text: "Sold on 11/4/2025", specs: "RTX 4060\nRyzen 5 5500\n32GB DDR4"},
-    { path: "/media/RTX5070TiPc.png", text: "This is a commsion build for a customer that wanted to go all-out. It is the most expensive computer that I have put together which cost $2100 in parts.", specs: "RTX 5070Ti\n Ryzen 9 9900X, 32GB DDR5" },
-    { path: "/media/room.png", text: "text" },
-    { path: "/media/RTX2070Pc.png", specs: "RTX 2070\nRyzen 5 2600\n32GB DDR4"},
-    { path: "/media/GTX1660Pc.png", text: "text" }
+    { path: "/media/RTX5070TiPc.png", text: "Commsion build for a customer that wanted to go all-out. Most expensive computer that I have put together at $2100 in parts.", specs: "RTX 5070Ti\n Ryzen 9 9900X\n32GB DDR5" },
+    { path: "/media/room.png", text: "Inventory during peak build periods" },
+    { path: "/media/RTX2080Pc.png", text: "This computer is memorable because it is the most profit that I have made on a sale. I built it for $400 and it sold at $800.", specs: "RTX 2080 Super\nIntel i9 9900\n32GB DDR4" },
+    { path: "/media/RTX2070Pc.png", text: "One of my first builds. Sold 7/7/2024", specs: "RTX 2070\nRyzen 5 2600\n32GB DDR4"},
+    { path: "/media/RTX2070Pc2.jpg", text: "Sold on 10/4/2025", specs: "RTX 2070 Super\nRyzen 7 2700X\n32GB DDR4"}
   ];
 
   
@@ -108,130 +106,213 @@ function App() {
 
   ];
 
+  const baseAppStyle = { height: "100%", position: "relative" };
+
+  const headerInnerStyle = {
+    width: "90%",
+    maxWidth: "900px",
+    margin: "-100px auto 0 auto",
+    paddingLeft: "110px",
+    textAlign: "left",
+    color: "white"
+  };
+
+  const titleStyle = { fontSize: "48px", margin: 0, fontWeight: 600 };
+  const subtitleStyle = { fontSize: "24px", margin: "10px 0 0 0", color: "#8c8e91ff" };
+  const locationRowStyle = { display: "flex", alignItems: "center", marginTop: "14px" };
+  const pinStyle = { width: "18px", height: "18px", marginRight: "8px", objectFit: "contain" };
+  const locationTextStyle = { fontSize: "18px", margin: 0, color: "#9aa0ab" };
+
+  const actionRowStyle = { display: "flex", alignItems: "center", gap: "16px", marginTop: "22px" };
+  const resumeLinkStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+    border: "1px solid #d1d5de",
+    padding: "2px 24px",
+    borderRadius: "6px",
+    fontSize: "18px",
+    color: "#d1d5de",
+    textDecoration: "none",
+    fontWeight: 500,
+    transform: "translateY(-3px)"
+  };
+  const resumeIconStyle = { width: "20px", height: "20px" };
+  const socialIconStyle = { width: "32px", height: "32px" };
+
+  const sectionHeaderStyle = {
+    width: "90%",
+    maxWidth: "900px",
+    margin: "-25px auto 0 auto",
+    paddingLeft: "110px",
+    textAlign: "left",
+    color: "white"
+  };
+  const sectionTitleStyle = { fontSize: "36px", margin: 0, fontWeight: 500 };
+
+  const techWrapStyle = { marginTop: "28px", display: "flex", justifyContent: "center", width: "100%" };
+  const techContainerStyle = {
+    width: "90%",
+    maxWidth: 850,
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "18px",
+    justifyContent: "flex-start",
+    padding: "12px",
+    boxSizing: "border-box",
+    marginBottom: "8px",
+  };
+
+  const workToggleWrapperStyle = {
+    position: "relative",
+    left: "50%",
+    marginTop: "50px",
+    transform: "translateX(-50%)",
+    width: "90%",
+    maxWidth: "800px",
+    display: "flex",
+    gap: "10px",
+    padding: "1px",
+    background: "#2A2F3A",
+    border: "2px solid #2A2F3A",
+    borderRadius: "12px",
+    boxSizing: "border-box"
+  };
+
+  const toggleBtnBase = {
+    flex: 1,
+    padding: "10px",
+    borderRadius: "8px",
+    border: "none",
+    cursor: "pointer",
+    color: "white",
+    transition: "0.2s"
+  };
+
+  const workEduContainerStyle = {
+    position: "relative",
+    left: "50%",
+    transform: "translateX(-50%)",
+    marginTop: "10px",
+    width: "90%",
+    maxWidth: "800px",
+    border: "2px solid #2A2F3A",
+    backdropFilter: "blur(10px)",
+    borderRadius: "12px",
+    padding: "16px",
+    color: "white",
+    boxSizing: "border-box"
+  };
+
+  const businessHeaderWrapperStyle = {
+    width: "90%",
+    maxWidth: "900px",
+    margin: "100px auto 0 auto",
+    paddingLeft: "110px",
+    textAlign: "left",
+    color: "white",
+  };
+
+  const businessPanelStyle = {
+    position: "relative",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "90%",
+    maxWidth: "800px",
+    margin: "20px 0 60px 0",
+    border: "2px solid #2A2F3A",
+    borderRadius: "12px",
+    padding: "16px",
+    boxSizing: "border-box",
+    backdropFilter: "blur(10px)",
+    color: "white"
+  };
+
+  const businessTitleH3Style = { marginTop: "32px", textAlign: "left" };
+  const businessPStyle = {
+    marginTop: "32px",
+    fontSize: "14px",
+    lineHeight: "1.7",
+    color: "#cfd3da",
+    textAlign: "left",
+    maxWidth: "720px"
+  };
+
+  const projectsHeaderWrapperStyle = {
+    width: "90%",
+    maxWidth: "900px",
+    margin: "100px auto 0 auto",
+    paddingLeft: "110px",
+    textAlign: "left",
+    color: "white",
+  };
+
+  const projectsAreaStyle = { width: "90%", maxWidth: 800, margin: "20px auto 60px auto" };
+
   return (
 
 
-    <div className="App" style={{ height: "100%", position: "relative" }}>
+    <div className="App" style={baseAppStyle}>
       <div className="shimmer-grid" aria-hidden="true"></div>
       <Sidebar />
 
       <header id="home" className="App-header">
-        <div
-          style={{
-            width: "90%",
-            maxWidth: "900px",
-            margin: "-100px auto 0 auto",
-            paddingLeft: "110px",
-            textAlign: "left",
-            color: "white"
-          }}
-        >
-          <h1 style={{ fontSize: "48px", margin: 0, fontWeight: 600 }}>
+        <div style={headerInnerStyle}>
+          <h1 style={titleStyle}>
             James Tabakian
           </h1>
 
-          <p style={{ fontSize: "24px", margin: "10px 0 0 0", color: "#8c8e91ff" }}>
+          <p style={subtitleStyle}>
             Software Engineer
           </p>
 
-          <div style={{ display: "flex", alignItems: "center", marginTop: "14px" }}>
+          <div style={locationRowStyle}>
             <img
               src="/logos/pin.png"
               alt="Location pin"
-              style={{
-                width: "18px",
-                height: "18px",
-                marginRight: "8px",
-                objectFit: "contain"
-              }}
+              style={pinStyle}
             />
-            <p style={{ fontSize: "18px", margin: 0, color: "#9aa0ab" }}>
+            <p style={locationTextStyle}>
               Columbia, SC
             </p>
           </div>
 
 
           {/* Social + Resume Buttons */}
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
-            marginTop: "22px"
-          }}>
+          <div style={actionRowStyle}>
             <div className="person-contact">
               <a
                 href="/James Tabakian Resume.pdf"
                 download="James-Tabakian-Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  border: "1px solid #d1d5de",
-                  padding: "2px 24px",
-                  borderRadius: "6px",
-                  fontSize: "18px",
-                  color: "#d1d5de",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                  transform: "translateY(-3px)"
-                }}
+                style={resumeLinkStyle}
               >
-                <img src="/logos/downloadFile.png" alt="Resume Icon" style={{ width: "20px", height: "20px" }} />
+                <img src="/logos/downloadFile.png" alt="Resume Icon" style={resumeIconStyle} />
                 Resume
               </a>
             </div>
             <div className="person-contact">
               <a href="https://www.linkedin.com/in/james-tabakian-93a333283/" target="_blank" rel="noopener noreferrer">
-                <img src="/logos/linkedin.png" alt="LinkedIn" style={{ width: "32px", height: "32px" }} />
+                <img src="/logos/linkedin.png" alt="LinkedIn" style={socialIconStyle} />
               </a>
             </div>
             <div className="project-tech">
               <a href="https://github.com/Alex-Tabakian" target="_blank" rel="noopener noreferrer">
-                <img src="/logos/github.png" alt="GitHub" style={{ width: "32px", height: "32px" }} />
+                <img src="/logos/github.png" alt="GitHub" style={socialIconStyle} />
               </a>
             </div>
           </div>
         </div>
       </header>
       {/* --- TECH / PROJECTS PANEL --- */}
-      <div
-        style={{
-          width: "90%",
-          maxWidth: "900px",
-          margin: "-25px auto 0 auto",   // top margin to match your spacing
-          paddingLeft: "110px",          // <<-- EXACT same left offset as header
-          textAlign: "left",
-          color: "white",
-        }}
-      >
-        <h1 id="skills" style={{ fontSize: "36px", margin: 0, fontWeight: 500 }}>
+      <div style={sectionHeaderStyle}>
+        <h1 id="skills" style={sectionTitleStyle}>
           Skills
         </h1>
       </div>
-      <div
-        style={{
-          marginTop: "28px",
-          display: "flex",
-          justifyContent: "center",
-          width: "100%",
-        }}
-      >
-        <div
-          id="tech-container"
-          style={{
-            width: "90%",
-            maxWidth: 850,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "18px",
-            justifyContent: "flex-start",
-            padding: "12px",
-            boxSizing: "border-box",
-            marginBottom: "8px",
-          }}
-        >
+      <div style={techWrapStyle}>
+        <div id="tech-container" style={techContainerStyle}>
           {technologies.map((tech, i) => {
             const hasSrc = tech.logoSrc && tech.logoSrc.trim() !== "";
             const maybeWithExt = hasSrc
@@ -261,35 +342,12 @@ function App() {
       </div>
 
       {/* Toggle Work / Education */}
-      <div
-        id="work"
-        style={{
-          position: "relative",
-          left: "50%",
-          marginTop: "50px",
-          transform: "translateX(-50%)",
-          width: "90%",
-          maxWidth: "800px",
-          display: "flex",
-          gap: "10px",
-          padding: "1px",
-          background: "#2A2F3A",
-          border: "2px solid #2A2F3A",
-          borderRadius: "12px",
-          boxSizing: "border-box"
-        }}
-      >
+      <div id="work" style={workToggleWrapperStyle}>
         <button
           onClick={() => setActive("work")}
           style={{
-            flex: 1,
-            padding: "10px",
-            borderRadius: "8px",
-            border: "none",
-            cursor: "pointer",
-            background: active === "work" ? "#01050F" : "#2A2F3A",
-            color: "white",
-            transition: "0.2s"
+            ...toggleBtnBase,
+            background: active === "work" ? "#01050F" : "#2A2F3A"
           }}
         >
           Work
@@ -298,14 +356,8 @@ function App() {
         <button
           onClick={() => setActive("education")}
           style={{
-            flex: 1,
-            padding: "10px",
-            borderRadius: "8px",
-            border: "none",
-            cursor: "pointer",
-            background: active === "education" ? "#01050F" : "#2A2F3A",
-            color: "white",
-            transition: "0.2s"
+            ...toggleBtnBase,
+            background: active === "education" ? "#01050F" : "#2A2F3A"
           }}
         >
           Education
@@ -314,20 +366,7 @@ function App() {
 
       <div
         className="work-edu-container"
-        style={{
-          position: "relative",
-          left: "50%",
-          transform: "translateX(-50%)",
-          marginTop: "10px",
-          width: "90%",
-          maxWidth: "800px",
-          border: "2px solid #2A2F3A",
-          backdropFilter: "blur(10px)",
-          borderRadius: "12px",
-          padding: "16px",
-          color: "white",
-          boxSizing: "border-box"
-        }}
+        style={workEduContainerStyle}
       >
         {/* WORK PANEL */}
         {active === "work" && (
@@ -387,85 +426,41 @@ function App() {
         )}
       </div>
 
-      <div
-        style={{
-          width: "90%",
-          maxWidth: "900px",
-          margin: "100px auto 0 auto",
-          paddingLeft: "110px",
-          textAlign: "left",
-          color: "white",
-        }}
-      >
-        <h1 id="business" style={{ fontSize: "36px", margin: 0, fontWeight: 500 }}>
+      <div style={businessHeaderWrapperStyle}>
+        <h1 id="business" style={sectionTitleStyle}>
           My Business
         </h1>
       </div>
 
-      <div
-        style={{
-          position: "relative",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "90%",
-          maxWidth: "800px",
-          margin: "20px 0 60px 0",
-          border: "2px solid #2A2F3A",
-          borderRadius: "12px",
-          padding: "16px",
-          boxSizing: "border-box",
-          backdropFilter: "blur(10px)",
-          color: "white"
-        }}
-      >
+      <div style={businessPanelStyle}>
         <ImageCarousel images={pcImages.filter(img => img.path)} />
 
         <h3
-        style={{
-            marginTop: "32px",
-            textAlign: "left"
-          }}
+        style={businessTitleH3Style}
         >
           Columbia Custom PCs LLC
         </h3>
         <p
-          style={{
-            marginTop: "32px",
-            fontSize: "14px",
-            lineHeight: "1.7",
-            color: "#cfd3da",
-            textAlign: "left",
-            maxWidth: "720px"
-          }}
+          style={businessPStyle}
         >
-        What started as a passion for building computers grew into Columbia Custom PCs LLC, a business focused on delivering well-balanced, reliable custom systems. Through this company, I generated over $100,000 in revenue by designing and assembling more than 150 PCs for gamers, streamers, and professionals. This experience allowed me to combine technical skill with business execution, focusing on consistency, trust, and long-term client satisfaction rather than one-off builds.
+        What began as a passion for building computers evolved into Columbia Custom PCs LLC, a business dedicated to delivering well-balanced, reliable custom systems. Through this venture, I generated over $100,000 in revenue by designing and assembling 150+ PCs for gamers, streamers, and professionals. The experience allowed me to blend technical expertise with business execution, prioritizing consistency, trust, and long-term client relationships over one-off builds.
         </p>
 
       </div>
 
 
 
-      <div
-        style={{
-          width: "90%",
-          maxWidth: "900px",
-          margin: "100px auto 0 auto",   // top margin to match your spacing
-          paddingLeft: "110px",          // <<-- EXACT same left offset as header
-          textAlign: "left",
-          color: "white",
-        }}
-      >
-        <h1 id="projects" style={{ fontSize: "36px", margin: 0, fontWeight: 500 }}>
+      <div style={projectsHeaderWrapperStyle}>
+        <h1 id="projects" style={sectionTitleStyle}>
           Projects
         </h1>
       </div>
 
-      <div style={{ width: "90%", maxWidth: 800, margin: "20px auto 60px auto" }}>
+      <div style={projectsAreaStyle}>
         <div className="projects-grid">
           {projects.map((project, index) => (
             <article className="project-card" key={index}>
 
-              {/* Media: prefer video, then image, else placeholder */}
               {project.videoSrc ? (
                 <video
                   src={project.videoSrc}
@@ -512,7 +507,6 @@ function App() {
                     <span className="project-link-disabled">No repo</span>
                   )}
 
-                  {/* Only show GlowButton if demoJar exists */}
                   {project.demoJar && (
                     <GlowButton className="demo-btn">
                       Click Me

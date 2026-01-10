@@ -6,6 +6,7 @@ function Sidebar() {
     { id: "home", label: "Home", yOffset: 0 },
     { id: "skills", label: "Skills", yOffset: 400 },
     { id: "work", label: "Work", yOffset: 200 },
+    { id: "business", label: "Business", yOffset: 440 },
     { id: "projects", label: "Projects", yOffset: 440 },
     { id: "contact", label: "Contact", yOffset: 0 }
   ];

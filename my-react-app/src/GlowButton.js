@@ -15,7 +15,6 @@ export default function GlowButton({
   const [perimeter, setPerimeter] = useState(0);
   const [running, setRunning] = useState(false);
 
-  // 👉 NEW: Function that calls backend to run your JAR
   async function handleClick() {
     if (running) return;
     setRunning(true);
@@ -102,8 +101,8 @@ export default function GlowButton({
     <button
       className="glow-btn svg-border-btn"
       style={{ width: `${width}px`, height: `${height}px`, borderRadius: `${radius}px` }}
-      onClick={handleClick}     // 👉 NEW: Runs JAR via backend
-      disabled={running}        // prevents double-click
+      onClick={handleClick}
+      disabled={running}
     >
       <span className="label">{running ? "Running..." : children}</span>
 

@@ -1,4 +1,3 @@
-/* ensure no white shows through and page can grow */
 html, body, #root {
   height: 100%;
   margin: 0;
@@ -59,33 +58,30 @@ html, body, #root {
 }
 
 .work-edu-container {
-  position: relative; /* required for pseudo-element */
+  position: relative;
 }
 .project-actions {
   display: flex;
   align-items: center;
-  gap: 12px; /* spacing between the buttons */
+  gap: 12px;
 }
 
-/* Optional: keep the GitHub button and GlowButton visually aligned */
 .project-github-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Optional: push GlowButton to the extreme right of the card */
 .project-actions.space-between {
   justify-content: space-between;
 }
 
-/* The vertical timeline line */
 .work-edu-container::before {
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 40px; /* aligns to the center of the logos in your layout */
+  left: 40px;
   width: 2px;
   background: rgba(255, 255, 255, 0.16);
   border-radius: 4px;
@@ -105,7 +101,6 @@ html, body, #root {
   font-size: 13px;
   user-select: none;
 
-  /* ADD THIS */
   transition: transform 0.2s ease;
 }
 
@@ -117,8 +112,8 @@ html, body, #root {
 .tech-logo-wrap {
   position: relative;
   z-index: 1;
-  width: 56px;              /* <<< controls logo size */
-  height: 56px;             /* <<< controls logo size */
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,24 +121,22 @@ html, body, #root {
   border-radius: 8px;
   margin-bottom: 8px;
   box-sizing: border-box;
-  padding: 6px;             /* adds breathing room */
+  padding: 6px;
 }
 
 .tech-logo-wrap img {
-  max-width: 100%;          /* <<< keeps logo inside box */
+  max-width: 100%;
   max-height: 100%;
   object-fit: contain;
   display: block;
 }
 
-/* Container for all education cards */
 .education-list {
   display: flex;
   flex-direction: column;
   gap: 22px;
 }
 
-/* Each education entry */
 .edu-card {
   display: flex;
   gap: 18px;
@@ -152,7 +145,6 @@ html, body, #root {
   padding-bottom: 12px;
 }
 
-/* Left side: logo only */
 .edu-left {
   width: 70px;
   min-width: 70px;
@@ -160,13 +152,12 @@ html, body, #root {
   justify-content: flex-start;
 }
 
-/* Logo container */
 .edu-logo {
   width: 48px;
   height: 48px;
   z-index: 2;
-  border-radius: 24px;   /* rounded corners */
-  overflow: hidden;       /* clips the image */
+  border-radius: 24px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -175,14 +166,13 @@ html, body, #root {
 }
 
 .edu-logo img {
-  width: 100%;            /* fill container */
-  height: 100%;           /* fill container */
-  object-fit: cover;      /* ensures no empty space */
-  border-radius: 10px;    /* OPTIONAL: reinforces rounding */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
   display: block;
 }
 
-/* Right side dark theme text */
 .edu-main {
   flex: 1;
   color: white;
@@ -190,7 +180,6 @@ html, body, #root {
   flex-direction: column;
 }
 
-/* Top section now STACKED vertically, not side-by-side */
 .edu-header {
   display: flex;
   flex-direction: column;
@@ -198,7 +187,6 @@ html, body, #root {
   margin-bottom: 4px;
 }
 
-/* School name (bold) */
 .edu-school {
   margin: 0;
   font-size: 15px;
@@ -207,7 +195,6 @@ html, body, #root {
   text-align: left;
 }
 
-/* Degree under school name */
 .edu-degree {
   color: #d1d5de;
   font-size: 15px;
@@ -215,7 +202,6 @@ html, body, #root {
   text-align: left;
 }
 
-/* Date on its own line, muted */
 .edu-date {
   color: #9aa0ab;
   font-size: 14px;
@@ -223,7 +209,6 @@ html, body, #root {
   text-align: left;
 }
 
-/* GPA line under the date */
 .edu-grade {
   color: #c3c8d2;
   font-size: 14px;
@@ -231,21 +216,18 @@ html, body, #root {
   text-align: left;
 }
 
-/* Container */
 .work-list {
   display: flex;
   flex-direction: column;
   gap: 22px;
 }
 
-/* Card */
 .work-card {
   display: flex;
   gap: 18px;
   align-items: flex-start;
 }
 
-/* Left column logo */
 .work-left {
   width: 70px;
   min-width: 70px;
@@ -256,8 +238,8 @@ html, body, #root {
   width: 48px;
   height: 48px;
   z-index: 2;
-  border-radius: 24px;   /* rounded corners */
-  overflow: hidden;       /* clips the image */
+  border-radius: 24px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -266,20 +248,19 @@ html, body, #root {
 }
 
 .work-logo img {
-  width: 100%;            /* fill container */
-  height: 100%;           /* fill container */
-  object-fit: cover;      /* ensures no empty space */
-  border-radius: 10px;    /* OPTIONAL: reinforces rounding */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
   display: block;
 }
-/* Right column */
+
 .work-main {
   flex: 1;
   text-align: left;
   color: white;
 }
 
-/* Header: company + dates */
 .work-header {
   display: flex;
   justify-content: space-between;
@@ -298,14 +279,12 @@ html, body, #root {
   font-size: 14px;
 }
 
-/* Position title */
 .work-position {
   color: #d1d5de;
   font-size: 15px;
   margin-top: 2px;
 }
 
-/* Bullet points */
 .work-bullets {
   margin-top: 8px;
   color: #d1d5de;
@@ -317,7 +296,6 @@ html, body, #root {
   line-height: 1.45;
 }
 
-/* Projects grid */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -325,9 +303,8 @@ html, body, #root {
   align-items: start;
 }
 
-/* Card */
 .project-card {
-  background: #01050F;/* slightly darker card */
+  background: #01050F;
   padding: 14px;
   border-radius: 10px;
   text-align: left;
@@ -338,7 +315,6 @@ html, body, #root {
   min-height: 320px;
 }
 
-/* Media */
 .project-media {
   width: 100%;
   height: 260px;
@@ -348,7 +324,6 @@ html, body, #root {
   background: #111;
 }
 
-/* Placeholder */
 .project-placeholder {
   width: 100%;
   height: 180px;
@@ -361,14 +336,12 @@ html, body, #root {
   margin-bottom: 12px;
 }
 
-/* Body */
 .project-body {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-/* Title */
 .project-title {
   margin: 0 0 24px 0;
   font-size: 18px;
@@ -376,7 +349,6 @@ html, body, #root {
   font-weight: 600;
 }
 
-/* Description */
 .project-description {
   margin: 0 0 24px 0;
   color: #c3c6c9;
@@ -385,9 +357,8 @@ html, body, #root {
   flex-grow: 0;
 }
 
-/* Tech badges */
 .project-tech-list {
-  margin-top: auto; /* push badges + link to bottom */
+  margin-top: auto;
 }
 
 .project-tech {
@@ -396,7 +367,6 @@ html, body, #root {
   border-radius: 6px;
   transition: transform 0.2s ease;
 
-  /* so expanding doesn't push others around awkwardly */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -443,13 +413,12 @@ html, body, #root {
   font-size: 13px;
 }
 
-/* White GitHub Button */
 .project-github-btn {
   display: inline-flex;
   align-items: center;
   width: 80px;
   height: 10px;
-  gap: 8px;                 /* spacing between icon + text */
+  gap: 8px;
   padding: 8px 8px;
   background: white;
   color: black;
@@ -463,20 +432,17 @@ html, body, #root {
   transition: 0.2s ease;
 }
 
-/* GitHub Icon */
 .project-github-btn img {
   width: 20px;
   height: 20px;
-  filter: invert(0);        /* full black logo on white button */
+  filter: invert(0);
 }
 
-/* Hover Animation */
 .project-github-btn:hover {
   background: #f2f2f2;
   transform: translateY(-2px);
 }
 
-/* Disabled */
 .project-link-disabled {
   color: #7a7f85;
   font-size: 14px;
@@ -488,81 +454,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Shimmer grid background - fixed behind content */
-.shimmer-grid {
-  position: fixed;
-  inset: 0;                    /* full-bleed */
-  pointer-events: none;        /* let mouse events pass through */
-  z-index: 0;                  /* behind your app content (raise content to z-index > 0) */
-
-  /* grid base (subtle lines) */
-  background-image:
-    repeating-linear-gradient(
-      to right,
-      rgba(255,255,255,0.02) 0px,
-      rgba(255,255,255,0.02) 1px,
-      transparent 1px,
-      transparent 40px
-    ),
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.02) 0px,
-      rgba(255,255,255,0.02) 1px,
-      transparent 1px,
-      transparent 40px
-    );
-
-  /* place shimmer overlay as separate layer with mask to keep it subtle */
-  background-color: transparent;
-  isolation: isolate;
-}
-
-/* pseudo for the shimmering sweep */
-.shimmer-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-
-  background: linear-gradient(
-    115deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.01) 30%,
-    rgba(255, 255, 255, 0.03) 45%,
-    rgba(255, 255, 255, 0.07) 50%,
-    rgba(255, 255, 255, 0.03) 55%,
-    rgba(255, 255, 255, 0.01) 70%,
-    rgba(255, 255, 255, 0) 100%
-  );
-
-  transform: translateX(-120%) translateY(0);
-  filter: blur(40px);         /* smoother glow */
-  opacity: 0.6;
-  will-change: transform, opacity;
-  mix-blend-mode: screen;     /* softer blend than overlay */
-  transition: opacity 0.3s ease-out;
-}
-
-
-/* animation: sweep the shimmer across */
-@keyframes shimmer-sweep {
-  from { transform: translateX(-120%) translateY(-5%); opacity: 0.6; }
-  50%  { opacity: 0.95; }
-  to   { transform: translateX(120%) translateY(5%); opacity: 0.6; }
-}
-
-.shimmer-grid::before {
-  content: none !important;
-  animation: none !important;
-}
-
-/* subtle parallax movement that reacts to mouse (optional) */
-.shimmer-grid[data-mx]::before {
-  /* read CSS variables set by JS for a tiny parallax shift */
-  transform: translateX(calc(var(--mx, -120%))) translateY(calc(var(--my, -5%)));
-}
-
-/* reduce motion preference */
 @media (prefers-reduced-motion: reduce) {
   .shimmer-grid::before {
     content: none !important;
@@ -570,7 +461,6 @@ html {
   }
 }
 
-/* Responsive: 1 column on small screens */
 @media (max-width: 720px) {
   .projects-grid {
     grid-template-columns: 1fr;
@@ -582,8 +472,6 @@ html {
   }
 }
 
-
-/* Small screen improvements */
 @media (max-width: 480px) {
   .edu-card {
     flex-direction: column;
@@ -604,3 +492,4 @@ html {
     transform: rotate(360deg);
   }
 }
+

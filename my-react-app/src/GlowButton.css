@@ -35,7 +35,7 @@
 }
 
 .segment {
-  stroke-linecap: butt;   /* butt so ends mathematically meet */
+  stroke-linecap: butt;
   stroke-linejoin: miter;
   mix-blend-mode: screen;
   filter: drop-shadow(0 0 12px rgba(255,255,255,0.06));
@@ -46,8 +46,6 @@
   shape-rendering: geometricPrecision;
 }
 
-/* Each element has its own --start-offset variable (set inline).
-   Keyframes reference that variable so each path animates from its own start. */
 @keyframes dashMove {
   from {
     stroke-dashoffset: var(--start-offset, 0px);
