@@ -2,161 +2,23 @@ import './App.css';
 import { useState, useEffect } from "react";
 import GlowButton from "./GlowButton";
 import ContactForm from "./ContactForm";
+import ImageCarousel from "./ImageCarousel";
+import Sidebar from "./Sidebar";
+
 
 // ----------------- App component -----------------
 function App() {
-
-
-  function Sidebar() {
-  // initial sections (yOffset in pixels)
-  const initial = [
-    { id: "home", label: "Home", yOffset: 0 },
-    { id: "skills", label: "Skills", yOffset: 400 },
-    { id: "work", label: "Work", yOffset: 200 },
-    { id: "projects", label: "Projects", yOffset: 440 },
-    { id: "contact", label: "Contact", yOffset: 0 }
-  ];
-
-  // load saved offsets from localStorage if present
-  const [sections, setSections] = useState(() => {
-    try {
-      const raw = localStorage.getItem("sidebarSections");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        // merge with initial to ensure all fields exist
-        return initial.map(init => ({ ...init, ...(parsed.find(p => p.id === init.id) || {}) }));
-      }
-    } catch (e) {}
-    return initial;
-  });
-
-  const [active, setActive] = useState(sections[0].id);
-
-  // persist sections (only offsets really change) whenever they update
-  useEffect(() => {
-    try {
-      localStorage.setItem("sidebarSections", JSON.stringify(sections));
-    } catch (e) {}
-  }, [sections]);
-
-  // Detect which section is centered (uses section.yOffset)
-  const detectCenteredSection = () => {
-    const viewportMid = window.innerHeight / 2;
-    let closestSection = sections[0].id;
-    let closestDistance = Infinity;
-
-    sections.forEach(sec => {
-      const element = document.getElementById(sec.id);
-      if (!element) return;
-
-      const rect = element.getBoundingClientRect();
-      const sectionMid = rect.top + rect.height / 2 + (sec.yOffset || 0);
-      const distance = Math.abs(sectionMid - viewportMid);
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestSection = sec.id;
-      }
-    });
-
-    setActive(closestSection);
-  };
-
-  // Scroll listener (scrollspy)
-  useEffect(() => {
-    const onScroll = () => detectCenteredSection();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [sections]);
-
-  // Handle clicking a sidebar button - scroll so section midpoint + yOffset sits at viewport center
-  const handleClick = (id) => {
-    const sec = sections.find(s => s.id === id);
-    if (!sec) return;
-    const element = document.getElementById(id);
-    if (!element) return;
-
-    const rect = element.getBoundingClientRect();
-    const currentScroll = window.scrollY || window.pageYOffset;
-    const targetY =
-      currentScroll +
-      rect.top +
-      rect.height / 2 -
-      window.innerHeight / 2 +
-      (sec.yOffset || 0);
-
-    window.scrollTo({
-      top: Math.max(0, Math.round(targetY)),
-      behavior: "smooth"
-    });
-
-    setTimeout(() => detectCenteredSection(), 350);
-  };
-
-  return (
-    <nav
-      style={{
-        position: "fixed",
-        top: "50%",
-        left: "20px",
-        transform: "translateY(-50%)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "12px",
-        zIndex: 9999,
-        padding: 4
-      }}
-    >
-      {sections.map(sec => (
-        <button
-          key={sec.id}
-          onClick={() => handleClick(sec.id)}
-          className="sidebar-btn"
-          style={{
-            padding: "8px 12px",
-            borderRadius: "8px",
-            background: active === sec.id ? "#2A2F3A" : "transparent",
-            border: active === sec.id ? "1px solid #2A2F3A" : "1px solid transparent",
-            color: active === sec.id ? "white" : "#9aa0ab",
-            fontWeight: 500,
-            textAlign: "left",
-            cursor: "pointer",
-            transition: "0.15s",
-            minWidth: 90
-          }}
-        >
-          {sec.label}
-        </button>
-      ))}
-    </nav>
-  );
-}
-
-
-
-
+  
   const [active, setActive] = useState("work");
 
   const workData = [
     {
-      company: "Columbia Custom PCs LLC",
-      position: "Software Engineer / Staff Researcher",
-      startDate: "Jun 2024",
-      endDate: "Present",
-      bullets: [
-        "Generated over $100K in revenue by building 150+ custom PCs and developed a full-stack inventory system with real-time analytics and automated tracking. Also produced detailed build logs and benchmarks that improved support efficiency and reduced post-sale issues."
-      ],
-      logoSrc: "/logos/uofsc_logo.jfif"
-    },
-
-    {
       company: "iMAPS Research Lab",
-      position: "Owner / Founder",
+      position: "Software Developer / Staff Researcher",
       startDate: "Aug 2023",
       endDate: "present",
       bullets: [
-        "Rebuilt a 6,000-line MATLAB tool into a multi-threaded C# system achieving 10× faster performance, developed C++ control software for an ultrasonic-scanning robotic arm, and designed a real-time WPF interface used in NASA-funded Non-Destructive Evaluation (NDE) research."
+        "Led the modernization of a large legacy MATLAB codebase into a high-performance, multithreaded C# application, redesigning system architecture to achieve a 10× runtime reduction under real hardware constraints. Developed low-level C++ robotic arm control software for automated ultrasonic scanning, integrating real-time sensor feedback to deliver ±0.1 mm repeatable positioning on a stepper-driven linear rail. Built a WPF desktop interface for real-time signal visualization and interactive system control. Collaborated closely with faculty and graduate researchers to deploy production software for NASA-funded ultrasonic wave analysis projects."
       ],
       logoSrc: "/logos/uofsc_logo.jfif"
     }
@@ -199,6 +61,15 @@ function App() {
     { name: "Windows", logoSrc: "/logos/windows", category: "Operating Systems" }
   ];
 
+  const pcImages = [
+    { path: "/media/RTX3070Pc.png", text: "This is my favorite build that I have put together because of the unique case and vertical GPU mount.\n\nRTX3070\nRyzen 7 5700X\n32GB DDR4 Ram"},
+    { path: "/media/RTX2080Pc.png", text: "This computer is memorable because it is the most profit that I have made on a sale. I paid roughly $400 for the parts and sold the pc for $800. \n\nRTX 2080 Super\nIntel i9 9900\n32GB DDR4 Ram" },
+    { path: "/media/RTX4060Pc.png", text: "text" },
+    { path: "/media/RTX5070TiPc.png", text: "This is a commsion build for a customer that wanted to go all-out. It is the most expensive computer that I have put together which cost $2100 in parts." },
+    { path: "/media/room.png", text: "text" },
+    { path: "/media/RTX2070Pc.png", text: "text" },
+    { path: "/media/GTX1660Pc.png", text: "text" }
+  ];
   const projects = [
     {
       name: "Checkers Bot",
@@ -511,8 +382,64 @@ function App() {
         )}
       </div>
 
-      {/* Projects Heading + Grid (implemented same style as work/education) */}
-      {/* Projects heading wrapped in same container as header */}
+      <div
+        style={{
+          width: "90%",
+          maxWidth: "900px",
+          margin: "100px auto 0 auto",
+          paddingLeft: "110px",
+          textAlign: "left",
+          color: "white",
+        }}
+      >
+        <h1 id="business" style={{ fontSize: "36px", margin: 0, fontWeight: 500 }}>
+          My Business
+        </h1>
+      </div>
+
+      <div
+        style={{
+          position: "relative",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "90%",
+          maxWidth: "800px",
+          margin: "20px 0 60px 0",
+          border: "2px solid #2A2F3A",
+          borderRadius: "12px",
+          padding: "16px",
+          boxSizing: "border-box",
+          backdropFilter: "blur(10px)",
+          color: "white"
+        }}
+      >
+        <ImageCarousel images={pcImages.filter(img => img.path)} />
+
+        <h3
+        style={{
+            marginTop: "32px",
+            textAlign: "left"
+          }}
+        >
+          Columbia Custom PCs LLC
+        </h3>
+        <p
+          style={{
+            marginTop: "32px",
+            fontSize: "14px",
+            lineHeight: "1.7",
+            color: "#cfd3da",
+            textAlign: "left",
+            maxWidth: "720px"
+          }}
+        >
+        What started as a passion for building computers grew into Columbia Custom PCs LLC, a business focused on delivering well-balanced, reliable custom systems. Through this company, I generated over $100,000 in revenue by designing and assembling more than 150 PCs for gamers, streamers, and professionals. This experience allowed me to combine technical skill with business execution, focusing on consistency, trust, and long-term client satisfaction rather than one-off builds.
+        </p>
+
+      </div>
+
+
+
       <div
         style={{
           width: "90%",
