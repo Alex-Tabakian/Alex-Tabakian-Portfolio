@@ -175,7 +175,7 @@ function ImageCarousel({ images }) {
         position: "absolute",
         inset: 0,
         borderRadius: "10px",
-        background: "rgba(0,0,0,0.55)", // adjust alpha to taste
+        background: "rgba(0,0,0,0.75)", // Dim overlay
         opacity: hover ? 1 : 0,
         transition: "opacity 0.32s ease",
         pointerEvents: "none",
@@ -184,38 +184,56 @@ function ImageCarousel({ images }) {
     />
   </div>
 
-  {/* Hover text (only shows images[index].text) */}
-  {hover && (
+{/* Hover text + specs */}
+{hover && (
+  <div
+    style={{
+      position: "absolute",
+      zIndex: 6,
+      inset: 0,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      pointerEvents: "none",
+    }}
+  >
     <div
       style={{
-        position: "absolute",
-        zIndex: 6,
-        inset: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        pointerEvents: "none",
+        pointerEvents: "auto",
+        padding: "16px 20px",
+        borderRadius: 10,
+        background: "transparent",
+        color: "#fff",
+        textAlign: "center",
+        maxWidth: "85%",
+        lineHeight: 1.4,
       }}
     >
-      <div
-        style={{
-          pointerEvents: "auto",
-          padding: "8px 12px",
-          borderRadius: 8,
-          background: "transparent",
-          color: "#fff",
-          fontSize: 16,
-          fontWeight: 600,
-          textAlign: "center",
-          maxWidth: "85%",
-          whiteSpace: "normal",
-          lineHeight: 1.3,
-        }}
-      >
-        {images[index].text || ""}
-      </div>
+      {/* Main description text */}
+      {images[index].text && (
+        <div
+          style={{
+            fontSize: 12,
+            fontWeight: 500,
+            marginBottom: images[index].specs ? 12 : 0,
+          }}
+        >
+          {images[index].text}
+        </div>
+      )}
+
+      {/* Specs (split by newline) */}
+      {images[index].specs && (
+        <div style={{ fontSize: 14, fontWeight: 400, color: "#d1d9e0" }}>
+          {images[index].specs.split("\n").map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
+        </div>
+      )}
     </div>
-  )}
+  </div>
+)}
+
 </div>
       {/* Left / Right nav buttons (centered vertically) */}
       <button onClick={goPrev} aria-label="Previous" style={navButtonStyle("left")}>

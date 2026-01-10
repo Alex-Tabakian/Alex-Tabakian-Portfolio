@@ -18,7 +18,10 @@ function App() {
       startDate: "Aug 2023",
       endDate: "present",
       bullets: [
-        "Led the modernization of a large legacy MATLAB codebase into a high-performance, multithreaded C# application, redesigning system architecture to achieve a 10× runtime reduction under real hardware constraints. Developed low-level C++ robotic arm control software for automated ultrasonic scanning, integrating real-time sensor feedback to deliver ±0.1 mm repeatable positioning on a stepper-driven linear rail. Built a WPF desktop interface for real-time signal visualization and interactive system control. Collaborated closely with faculty and graduate researchers to deploy production software for NASA-funded ultrasonic wave analysis projects."
+        "Led full rewrite of a 6,000+ line legacy MATLAB system into a multithreaded C# application, redesigning architecture to reduce runtime by 10× under real hardware constraints.",
+        "Developed a robotic arm control program in C++ for automated ultrasonic scanning, integrating sensor feedback to achieve ±0.1 mm repeatable positioning on a stepper-driven linear rail.",
+        "Built a WPF front-end for real-time signal visualization and interactive control.",
+        "Collaborated with faculty and graduate students to integrate software into NASA-funded ultrasonic wave analysis projects."
       ],
       logoSrc: "/logos/uofsc_logo.jfif"
     }
@@ -62,14 +65,16 @@ function App() {
   ];
 
   const pcImages = [
-    { path: "/media/RTX3070Pc.png", text: "This is my favorite build that I have put together because of the unique case and vertical GPU mount.\n\nRTX3070\nRyzen 7 5700X\n32GB DDR4 Ram"},
-    { path: "/media/RTX2080Pc.png", text: "This computer is memorable because it is the most profit that I have made on a sale. I paid roughly $400 for the parts and sold the pc for $800. \n\nRTX 2080 Super\nIntel i9 9900\n32GB DDR4 Ram" },
-    { path: "/media/RTX4060Pc.png", text: "text" },
-    { path: "/media/RTX5070TiPc.png", text: "This is a commsion build for a customer that wanted to go all-out. It is the most expensive computer that I have put together which cost $2100 in parts." },
+    { path: "/media/RTX3070Pc.png", text: "This is my favorite build that I have put together because of the unique case and vertical GPU mount.", specs: "RTX3070\nRyzen 7 5700X\n32GB DDR4"},
+    { path: "/media/RTX2080Pc.png", text: "This computer is memorable because it is the most profit that I have made on a sale. I paid roughly $400 for the parts and sold the pc for $800.", specs: "RTX 2080 Super\nIntel i9 9900\n32GB DDR4" },
+    { path: "/media/RTX4060Pc.png", text: "Sold on 11/4/2025", specs: "RTX 4060\nRyzen 5 5500\n32GB DDR4"},
+    { path: "/media/RTX5070TiPc.png", text: "This is a commsion build for a customer that wanted to go all-out. It is the most expensive computer that I have put together which cost $2100 in parts.", specs: "RTX 5070Ti\n Ryzen 9 9900X, 32GB DDR5" },
     { path: "/media/room.png", text: "text" },
-    { path: "/media/RTX2070Pc.png", text: "text" },
+    { path: "/media/RTX2070Pc.png", specs: "RTX 2070\nRyzen 5 2600\n32GB DDR4"},
     { path: "/media/GTX1660Pc.png", text: "text" }
   ];
+
+  
   const projects = [
     {
       name: "Checkers Bot",
