@@ -64,12 +64,12 @@ function App() {
 
   const pcImages = [
     { path: "/media/RTX3070Pc.png", text: "This is my favorite build because of the unique case and vertical GPU mount.", specs: "RTX 3070\nRyzen 7 5700X\n32GB DDR4"},
-    { path: "/media/RTX4060Pc.png", text: "Sold on 11/4/2025", specs: "RTX 4060\nRyzen 5 5500\n32GB DDR4"},
+    { path: "/media/Rtx4060Pc.png", text: "Sold on 11/4/2025", specs: "RTX 4060\nRyzen 5 5500\n32GB DDR4"},
     { path: "/media/RTX5070TiPc.png", text: "Commsion build for a customer that wanted to go all-out. Most expensive computer that I have put together at $2100 in parts.", specs: "RTX 5070Ti\n Ryzen 9 9900X\n32GB DDR5" },
     { path: "/media/room.png", text: "Inventory during peak build periods" },
     { path: "/media/RTX2080Pc.png", text: "This computer is memorable because it is the most profit that I have made on a sale. I built it for $400 and it sold at $800.", specs: "RTX 2080 Super\nIntel i9 9900\n32GB DDR4" },
     { path: "/media/RTX2070Pc.png", text: "One of my first builds. Sold 7/7/2024", specs: "RTX 2070\nRyzen 5 2600\n32GB DDR4"},
-    { path: "/media/RTX2070Pc2.jpg", text: "Sold on 10/4/2025", specs: "RTX 2070 Super\nRyzen 7 2700X\n32GB DDR4"}
+    { path: "/media/RTX2070PC2.jpg", text: "Sold on 10/4/2025", specs: "RTX 2070 Super\nRyzen 7 2700X\n32GB DDR4"}
   ];
 
   
