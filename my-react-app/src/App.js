@@ -22,6 +22,19 @@ function App() {
         "Collaborated with faculty and graduate students to integrate software into NASA-funded ultrasonic wave analysis projects."
       ],
       logoSrc: "/logos/uofsc_logo.jfif"
+    },
+    {
+      company: "Lowe's",
+      position: "Cashier",
+      startDate: "Jan 2022",
+      endDate: "Aug 2023",
+      bullets: [
+        "Operated and monitored point-of-sale (POS) systems with a focus on data accuracy, transaction integrity, and error resolution.",
+        "Provided expert support on product inquiries, returns, and exchanges to ensure seamless customer service.",
+        "Trained four new team members on cash handling, inventory procedures, and customer service best practices.",
+        "Maintained a structured, detail-oriented approach to handling high-volume transactions in a fast-paced environment."
+      ],
+      logoSrc: "/logos/lowes_logo.jfif"
     }
   ];
 
@@ -87,7 +100,7 @@ function App() {
       description: "PC inventory tracker that logs components, updates stock automatically, and keeps hardware organized.",
       imageSrc: "/media/PcLogger.png",
       technologies: ["JavaScript", "Firebase"],
-      source: "https://github.com/Alex-Tabakian/CheckersBot"
+      source: "https://github.com/Alex-Tabakian/PcLogr"
     },
     {
       name: "Music App",
@@ -293,7 +306,7 @@ function App() {
               </a>
             </div>
             <div className="person-contact">
-              <a href="https://www.linkedin.com/in/james-tabakian-93a333283/" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.linkedin.com/in/james-tabakian/" target="_blank" rel="noopener noreferrer">
                 <img src="/logos/linkedin.png" alt="LinkedIn" style={socialIconStyle} />
               </a>
             </div>
